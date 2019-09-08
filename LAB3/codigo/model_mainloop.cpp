@@ -1,3 +1,6 @@
+/*
+	Paulo Roberto Andrade Filho - LAB3. RA156951
+*/
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -12,16 +15,20 @@ uint64_t get_now_ms() {
 
 int main ()
 {
-  Corpo *c1 = new Corpo(10, 0, 20);
-  Corpo *c2 = new Corpo(10, 0, 19);
-  Corpo *c3 = new Corpo(10, 0, 17);
-  Corpo *c4 = new Corpo(10, 0, 15);
+	Corpo *c1 = new Corpo(10, 5, 0, 1.5, 100);
+	Corpo *c2 = new Corpo(5, 4, 0, 1.5, 100);
+	Corpo *c3 = new Corpo(7, 0, 0, 1.5, 100);
+	Corpo *c4 = new Corpo(10, 0, 0, 1.5, 100);
+	Corpo *c5 = new Corpo(1, -4, 0, 1.5, 100);
+	Corpo *c6 = new Corpo(10, -5, 0, 1.5, 100);
 
   ListaDeCorpos *l = new ListaDeCorpos();
-  l->add_corpo(c1);
-  l->add_corpo(c2);
-  l->add_corpo(c3);
-  l->add_corpo(c4);
+	l->add_corpo(c1);
+	l->add_corpo(c2);
+	l->add_corpo(c3);
+	l->add_corpo(c4);
+	l->add_corpo(c5);
+	l->add_corpo(c6);
 
   Fisica *f = new Fisica(l);
 
@@ -47,22 +54,29 @@ int main ()
     deltaT = t1-t0;
 
     // Atualiza modelo
-    f->update(deltaT);
+    
 
     // Atualiza tela
-    tela->update();
+    
 
     // Lê o teclado
     char c = teclado->getchar();
     if (c=='w') {
-      f->choque();
-    }
+      f->update(deltaT,500);
+    } else
     if (c=='q') {
       break;
+    } else if (c=='s'){
+      f->update(deltaT,-500);
+	} else 
+	{
+       f->update(deltaT,0);
     }
 
+	tela->update();
+
     // Condicao de parada
-    if ( (t1-T) > 10000 ) break;
+    if ( (t1-T) > 20000 ) break;
 
     std::this_thread::sleep_for (std::chrono::milliseconds(100));
     i++;

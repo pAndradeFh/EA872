@@ -1,3 +1,6 @@
+/*
+	Paulo Roberto Andrade Filho - LAB3. RA156951
+*/
 #include <vector>
 #include <chrono>
 #include <thread>
@@ -8,15 +11,19 @@
 #include <ncurses.h>
 using namespace std::chrono;
 
-Corpo::Corpo(float massa, float velocidade, float posicao) {
+Corpo::Corpo(float massa, float velocidade, float posicao, float amortecimento, float constante_mola) {
   this->massa = massa;
   this->velocidade = velocidade;
   this->posicao = posicao;
+  this->constante_mola = constante_mola;
+  this->amortecimento = amortecimento;
+  this->aceleracao = (-amortecimento*velocidade-constante_mola*posicao)/massa;
 }
 
-void Corpo::update(float nova_velocidade, float nova_posicao) {
+void Corpo::update(float nova_velocidade, float nova_posicao, float nova_aceleracao) {
   this->velocidade = nova_velocidade;
   this->posicao = nova_posicao;
+  this->aceleracao = nova_aceleracao;
 }
 
 float Corpo::get_massa() {
@@ -31,6 +38,19 @@ float Corpo::get_posicao() {
   return this->posicao;
 }
 
+
+float Corpo::get_aceleracao(){
+  return this->aceleracao;
+}
+
+float Corpo::get_amortecimento(){
+  return this->amortecimento;
+}
+
+float Corpo::get_constante_mola(){
+  return this->constante_mola;
+}
+
 ListaDeCorpos::ListaDeCorpos() {
   this->corpos = new std::vector<Corpo *>(0);
 }
@@ -41,13 +61,13 @@ void ListaDeCorpos::hard_copy(ListaDeCorpos *ldc) {
   for (int k=0; k<corpos->size(); k++) {
     Corpo *c = new Corpo( (*corpos)[k]->get_massa(),\
                           (*corpos)[k]->get_posicao(),\
-                          (*corpos)[k]->get_velocidade()
-                        );
+                          (*corpos)[k]->get_velocidade(),\
+                          (*corpos)[k]->get_amortecimento(),\
+	           	  (*corpos)[k]->get_constante_mola() );
     this->add_corpo(c);
   }
 
 }
-
 
 void ListaDeCorpos::add_corpo(Corpo *c) {
   (this->corpos)->push_back(c);
@@ -61,76 +81,70 @@ Fisica::Fisica(ListaDeCorpos *ldc) {
   this->lista = ldc;
 }
 
-void Fisica::update(float deltaT) {
+void Fisica::update(float deltaT, float F) {
   // Atualiza parametros dos corpos!
   std::vector<Corpo *> *c = this->lista->get_corpos();
   for (int i = 0; i < (*c).size(); i++) {
-    float new_vel = (*c)[i]->get_velocidade() + (float)deltaT * (-10.0)/1000;
+    float new_vel = (*c)[i]->get_velocidade() + (float)deltaT * (*c)[i]->get_aceleracao()/1000;
     float new_pos = (*c)[i]->get_posicao() + (float)deltaT * new_vel/1000;
-    if (new_pos < 0) {
-      new_pos *= -1;
-      new_vel *= -1;
-    }
-
-    (*c)[i]->update(new_vel, new_pos);
+    float new_acel = (F-(*c)[i]->get_amortecimento()*new_vel -(*c)[i]->get_constante_mola()*new_pos)/(*c)[i]->get_massa();
+    (*c)[i]->update(new_vel, new_pos, new_acel);
   }
 }
 
-void Fisica::choque() {
-  // Atualiza parametros dos corpos!
-  std::vector<Corpo *> *c = this->lista->get_corpos();
-  for (int i = 0; i < (*c).size(); i++) {
-    float new_vel = 15;
-    float new_pos = (*c)[i]->get_posicao();
-    (*c)[i]->update(new_vel, new_pos);
-  }
-}
 Tela::Tela(ListaDeCorpos *ldc, int maxI, int maxJ, float maxX, float maxY) {
-  this->lista = ldc;
-  this->lista_anterior = new ListaDeCorpos();
-  this->lista_anterior->hard_copy(this->lista);
-  this->maxI = maxI;
-  this->maxJ = maxJ;
-  this->maxX = maxX;
-  this->maxY = maxY;
+	this->lista = ldc;
+	this->lista_anterior = new ListaDeCorpos();
+	this->lista_anterior->hard_copy(this->lista);
+	this->maxI = maxI;
+	this->maxJ = maxJ;
+	this->maxX = maxX;
+	this->maxY = maxY;
 }
 
 void Tela::init() {
-  initscr();			       /* Start curses mode 		*/
-	raw();				         /* Line buffering disabled	*/
-  curs_set(0);           /* Do not display cursor */
+	 initscr();
+  if(has_colors() == FALSE)
+   {	
+
+   } else {
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+        attron(COLOR_PAIR(1));
+   }
+
+  raw();
+  curs_set(0);
 }
 
 void Tela::update() {
-  int i;
+	int i, meio; 
+	std::vector<Corpo *> *corpos_old = this->lista_anterior->get_corpos();
+	meio = (int) (this->maxI)/2;
 
-  std::vector<Corpo *> *corpos_old = this->lista_anterior->get_corpos();
+	for (int k=0; k<corpos_old->size(); k++)
+	{
+		i = (int) ((*corpos_old)[k]->get_posicao()) * (this->maxI / this->maxX) +meio;
+		if( i >=0 && i <= this->maxX){
+		move(i, k);
+		echochar(' ');
+	}
+}
 
-  // Apaga corpos na tela
-  for (int k=0; k<corpos_old->size(); k++)
-  {
-    i = (int) ((*corpos_old)[k]->get_posicao()) * \
-        (this->maxI / this->maxX);
-    move(i, k);   /* Move cursor to position */
-    echochar(' ');  /* Prints character, advances a position */
-  }
+std::vector<Corpo *> *corpos = this->lista->get_corpos();
+for (int k=0; k<corpos->size(); k++)
+{
+    i = (int) ((*corpos)[k]->get_posicao()) * (this->maxI / this->maxX) + meio;
 
-  // Desenha corpos na tela
-  std::vector<Corpo *> *corpos = this->lista->get_corpos();
+    if(i >=0 && i <= this->maxX){
+	move(i, k); 
+	echochar('o');
+     }
 
-  for (int k=0; k<corpos->size(); k++)
-  {
-    i = (int) ((*corpos)[k]->get_posicao()) * \
-        (this->maxI / this->maxX);
-    move(i, k);   /* Move cursor to position */
-    echochar('*');  /* Prints character, advances a position */
-
-    // Atualiza corpos antigos
     (*corpos_old)[k]->update(  (*corpos)[k]->get_velocidade(),\
-                               (*corpos)[k]->get_posicao());
+                               (*corpos)[k]->get_posicao(),\
+			       (*corpos)[k]->get_aceleracao());
   }
-
-  // Atualiza tela
   refresh();
 }
 
@@ -142,31 +156,14 @@ Tela::~Tela() {
   this->stop();;
 }
 
-
-/*
-class Teclado {
-  private:
-    char ultima_captura;
-    int rodando;
-
-  public:
-    Teclado();
-    ~Teclado();
-    void stop();
-    void init();
-    char getchar();
-}
-
-*/
-
 void threadfun (char *keybuffer, int *control)
 {
   char c;
   while ((*control) == 1) {
-    c = getch();
-    if (c!=ERR) (*keybuffer) = c;
-    else (*keybuffer) = 0;
-    std::this_thread::sleep_for (std::chrono::milliseconds(10));
+	c = getch();
+	if (c!=ERR) (*keybuffer) = c;
+	else (*keybuffer) = 0;
+   	std::this_thread::sleep_for (std::chrono::milliseconds(10));
   }
   return;
 }
@@ -178,11 +175,10 @@ Teclado::~Teclado() {
 }
 
 void Teclado::init() {
-  // Inicializa ncurses
-  raw();				         /* Line buffering disabled	*/
-	keypad(stdscr, TRUE);	 /* We get F1, F2 etc..		*/
-	noecho();			         /* Don't echo() while we do getch */
-  curs_set(0);           /* Do not display cursor */
+	raw();
+	keypad(stdscr, TRUE);
+	noecho();
+	curs_set(0);           
 
   this->rodando = 1;
   std::thread newthread(threadfun, &(this->ultima_captura), &(this->rodando));

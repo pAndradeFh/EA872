@@ -1,4 +1,6 @@
-
+/*
+	Paulo Roberto Andrade Filho - LAB3. RA156951
+*/
 #ifndef OO_MODEL_HPP
 #define OO_MODEL_HPP
 
@@ -9,13 +11,19 @@ class Corpo {
   float massa;
   float velocidade;
   float posicao;
+  float aceleracao;
+  float amortecimento;
+  float constante_mola;
 
   public:
-  Corpo(float massa, float velocidade, float posicao);
-  void update(float nova_velocidade, float nova_posicao);
+  Corpo(float massa, float velocidade, float posicao, float amortecimento, float constante_mola);
+  void update(float nova_velocidade, float nova_posicao, float nova_aceleracao);
   float get_massa();
   float get_velocidade();
   float get_posicao();
+  float get_aceleracao();
+  float get_constante_mola();
+  float get_amortecimento();
 };
 
 class ListaDeCorpos {
@@ -36,8 +44,7 @@ class Fisica {
   public:
     Fisica(ListaDeCorpos *ldc);
     void add_corpo(Corpo *c);
-    void choque();
-    void update(float deltaT);
+    void update(float deltaT, float forca);
 };
 
 class Tela {
