@@ -13,5 +13,5 @@ A função update foi atualizada para que, quando o botão W ou S for apertado, 
 -- LAB4
 Foi corrigida a função update, para que ela não tenha como entrada a força, esta sendo aplicada em uma função a parte, da física, chamada de adicionaForca()
 No oo_model foram adicionadas as interfaces das classes Player e do Sample; Em cpp foram adicionadas as funções dessas classes. 
-No model_mainloop, foi adicionado o comportamento de 
+No model_mainloop, foi adicionado o comportamento de executar um som ao clicar nas teclas w ou s. 
 -- 
