@@ -12,6 +12,7 @@
 class Player {
 	private:
 	float massa;
+	float amortecimento;
 	float posicao_x;
 	float posicao_y;
 	float velocidade_x;
@@ -20,7 +21,7 @@ class Player {
 	float aceleracao_y;
 
 	public:
-	Player(float massa, float x, float y, float vx, float vy, float ax, float ay);
+	Player(float massa, float x, float y, float vx, float vy, float ax, float ay, float am);
 	void update(float x, float y, float vx, float vy);
 	void update(float x, float y, float vx, float vy, float ax, float ay);
 	void set_massa(float massa);
@@ -31,14 +32,16 @@ class Player {
 	float get_vy();
 	float get_ax();
 	float get_ay();
+	float get_am();
 };
 
 class Fisica {
   private:
     Player *jogador;
+		float max_vel;
 
   public:
-    Fisica(Player *jogador);
+    Fisica(Player *jogador, float max_vel);
 		void update(float deltaT);
 		void aplica_forca(float deltaT, float forca_x, float forca_y);
 };
@@ -73,6 +76,28 @@ class Teclado {
     void stop();
     void init();
     char getchar();
+};
+
+
+class Comida {
+	private:
+		int x;
+		int y;
+	public:
+		Comida(int x, int y);
+		~Comida();
+		int get_x();
+		int get_y();
+};
+
+
+class listComida {
+	private:
+		std::vector<Comida*> *comidas;
+	public:
+		listComida();
+    void hard_copy(listComida *ldc);
+    void add_corpo(Comida *c);
 };
 
 #endif

@@ -20,8 +20,9 @@ uint64_t get_now_ms() {
 int main ()
 {
 
-  Player *jog = new Player(20.0, WIDTH/2, HEIGTH/2, 0.0, 0.0, 0.0, 0.0);
-  Fisica *f = new Fisica(jog);
+  //Player *jog = new Player(10.0, HEIGTH/2, WIDTH/2, 0.0, 0.0, 0.0, 0.0, 1);
+  Player *jog = new Player(10.0, 6, 6, 0.0, 0.0, 0.0, 0.0, 1);
+  Fisica *f = new Fisica(jog, 20);
   //
   Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN);
   tela->init();
@@ -40,38 +41,32 @@ int main ()
   T = get_now_ms();
   t1 = T;
   while (1) {
-  //   // Atualiza timers
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
-  //
-  //   // Atualiza modelo
-  //
-  //   // Atualiza tela
-  //
-  //   // Lê o teclado
+
     char c = teclado->getchar();
     if (c=='w') {
-      f->aplica_forca(deltaT,(float) 10.0, (float)  0.0);
+      f->aplica_forca(deltaT, -10.0, 0.0);
     } else if ( c == 'q') {
       break;
     } else if (c=='s'){
-      f->aplica_forca(deltaT,(float) 10.0, 0.0);
+      f->aplica_forca(deltaT, 10.0, 0.0);
     } else if (c=='a'){
-      f->aplica_forca(deltaT, (float) 0.0, (float) 10.0);
+      f->aplica_forca(deltaT, 0.0, -10.0);
     } else if (c=='d'){
-      f->aplica_forca(deltaT, (float) 0.0, (float) 10.0);
-    };
-
-    std::cout << jog->get_x() << jog->get_y() << '\n';
+      f->aplica_forca(deltaT, 0.0, 10.0);
+    } else {
+      f->update(deltaT);
+    }
 
     tela->update();
 
-    if ( (t1-T) > 10000 ) break;
-    std::this_thread::sleep_for (std::chrono::milliseconds(500));
+    if ( (t1-T) > 40000 ) break;
+    std::this_thread::sleep_for (std::chrono::milliseconds(100));
     i++;
   }
- tela->stop();
+  tela->stop();
   teclado->stop();
   return 0;
 }
