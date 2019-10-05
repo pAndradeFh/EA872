@@ -66,8 +66,22 @@ float Player::get_ay(){
 /*
 	Setters Player
 */
+
+// update a massa do jogador
+void Player::set_massa(float massa){
+	this->massa = massa;
+}
+
+// update as posicoes e as velocidades do jogador
+void Player::update(float x, float y, float vx, float vy){
+	this->posicao_x = x;
+	this->posicao_y = y;
+	this->velocidade_x = vx;
+	this->velocidade_y = vy;
+}
+
 // Update as posicoes, velocidades e aceleracoes
-void Player::update_player_aceleracao(float x, float y, float vx, float vy, float ax, float ay){
+void Player::update(float x, float y, float vx, float vy, float ax, float ay){
 	this->posicao_x = x;
 	this->posicao_y = y;
 	this->velocidade_x = vx;
@@ -76,30 +90,17 @@ void Player::update_player_aceleracao(float x, float y, float vx, float vy, floa
 	this->aceleracao_y = ay;
 }
 
-// update a massa do jogador
-void Player::set_massa(float massa){
-	this->massa = massa;
-}
-
-// update as posicoes e as velocidades do jogador
-void Player::update_player(float x, float y, float vx, float vy){
-	this->posicao_x = x;
-	this->posicao_y = y;
-	this->velocidade_x = vx;
-	this->velocidade_y = vy;
-}
-
 /*
 	Construtor Fisica - cria uma nova fisica
 */
-Fisica::Fisica(Player jogador){
+Fisica::Fisica(Player *jogador){
 	this->jogador = jogador;
 }
 
 
 //	Atualiza o modelo físico
-Fisica::update(float deltaT){
-	Player jog = this->jogador;
+void Fisica::update(float deltaT){
+	Player *jog = this->jogador;
 	float new_vel_x = jog->get_vx() + (float)deltaT * jog->get_ax()/1000;
 	float new_vel_y = jog->get_vy() + (float)deltaT * jog->get_ay()/1000;
 
@@ -110,36 +111,35 @@ Fisica::update(float deltaT){
 }
 
 //	Aplica uma força ao corpo
-Fisica::aplica_forca(float deltaT, float forca_x, float forca_y){
-	Player jog = this->jogador;
+void Fisica::aplica_forca(float deltaT, float forca_x, float forca_y){
+	Player *jog = this->jogador;
 	float new_vel_x = jog->get_vx() + (float)deltaT * jog->get_ax()/1000;
 	float new_vel_y = jog->get_vy() + (float)deltaT * jog->get_ay()/1000;
 
 	float new_pos_x = jog->get_x() + (float)deltaT * new_vel_x/1000;
 	float new_pos_y = jog->get_y() + (float)deltaT * new_vel_y/1000;
 
-	float new_aceleracao_x =
+	float new_aceleracao_x = -forca_x/jog->get_massa();
+	float new_aceleracao_y = -forca_y/jog->get_massa();
 
-	jog->update(new_vel_x, new_vel_y, new_pos_x, new_pos_y);
+	jog->update(new_vel_x, new_vel_y, new_pos_x, new_pos_y, new_aceleracao_x, new_aceleracao_y);
 }
 
 //
 //
 //
 
-Tela::Tela(Player *ldc, int maxI, int maxJ, float maxX, float maxY) {
-	this->lista = ldc;
-	this->lista_anterior = Player;
-	this->lista_anterior->hard_copy(this->lista);
-	this->maxI = maxI;
-	this->maxJ = maxJ;
-	this->maxX = maxX;
-	this->maxY = maxY;
+Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player) {
+	this->jogador = ldc;
+	this->largura = largura;
+	this->tela_player = tela_player;
+	this->comprimento = comprimento;
 }
 
 void Tela::init() {
-	 initscr();
-  if(has_colors() == FALSE {
+	int i;
+	initscr();
+  if(has_colors() == FALSE) {
 
 	} else {
 		start_color();
@@ -147,40 +147,37 @@ void Tela::init() {
     attron(COLOR_PAIR(1));
   }
 
-  raw();
-  curs_set(0);
+	i = (int) this->tela_player/2+1;
+	raw();
+	curs_set(0);
+	move(i, i);
+	echochar('o');
+
 }
 
 void Tela::update() {
-	int i, meio;
-	std::vector<Corpo *> *corpos_old = this->lista_anterior->get_corpos();
-	meio = (int) (this->maxI)/2;
+	int x, y, meio, right_screen_bound;
+	x = (int) (this->jogador->get_x());
+	y = (int) (this->jogador->get_x());
+	meio = (int) (this->tela_player)/2;
 
-	for (int k=0; k<corpos_old->size(); k++)
-	{
-		i = (int) ((*corpos_old)[k]->get_posicao()) * (this->maxI / this->maxX) +meio;
-		if( i >=0 && i <= this->maxX){
-		move(i, k);
-		echochar(' ');
-	}
+	int right_bound = y+meio;
+	int left_bound = y-meio;
+	int top_bound = x-meio;
+	int bottom_bound = x+meio;
+
+	// if(top_bound <= 0 ){
+	// 	int i, j = x;
+	// 	for(i=0;i < this->tela_player; i)
+	// 		move(-j+meio, i);
+	// 		echochar('=');
+	// 	}
+
+		move(meio+1, meio+1);
+		echochar('=');
+		// refresh();
 }
 
-std::vector<Corpo *> *corpos = this->lista->get_corpos();
-for (int k=0; k<corpos->size(); k++)
-{
-    i = (int) ((*corpos)[k]->get_posicao()) * (this->maxI / this->maxX) + meio;
-
-    if(i >=0 && i <= this->maxX){
-	move(i, k);
-	echochar('o');
-     }
-
-    (*corpos_old)[k]->update(  (*corpos)[k]->get_velocidade(),\
-                               (*corpos)[k]->get_posicao(),\
-			       (*corpos)[k]->get_aceleracao());
-  }
-  refresh();
-}
 
 void Tela::stop() {
   endwin();

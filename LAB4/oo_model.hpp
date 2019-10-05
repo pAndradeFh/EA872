@@ -1,13 +1,10 @@
 /*
-	Paulo Roberto Andrade Filho - LAB4. RA156951
+	Paulo Roberto Andrade Filho - LAB3. RA156951
 */
 #ifndef OO_MODEL_HPP
 #define OO_MODEL_HPP
 
 #include <thread>
-#include <portaudio.h>
-#include <vector>
-
 
 class Corpo {
   private:
@@ -47,8 +44,7 @@ class Fisica {
   public:
     Fisica(ListaDeCorpos *ldc);
     void add_corpo(Corpo *c);
-    void update(float deltaT);
-    void adicionaForca(float deltaT, float novaForca);
+    void update(float deltaT, float forca);
 };
 
 class Tela {
@@ -81,49 +77,5 @@ class Teclado {
     void init();
     char getchar();
 };
-
-
-namespace Audio {
-
-class Sample {
-  private:
-    std::vector<float> data;
-    unsigned int position;
-
-  public:
-    Sample();
-    ~Sample();
-    void load(const char *filename);
-    std::vector<float> get_data();
-    unsigned int get_position();
-    void set_position(unsigned int pos);
-    bool finished();
-
-};
-
-
-class Player {
-  private:
-    Sample *audio_sample;
-    bool playing;
-
-    PaStreamParameters  outputParameters;
-    PaStream*           stream;
-    PaError             err;
-    PaTime              streamOpened;
-
-
-  public:
-    Player();
-    ~Player();
-
-    void init();
-    void pause();
-    void stop();
-    void play(Sample *audiosample);
-    Sample *get_data();
-};
-
-}
 
 #endif

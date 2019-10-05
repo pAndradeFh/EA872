@@ -1,4 +1,4 @@
-Paulo Roberto Andrade Filho RA156951 LAB4 EA872
+Paulo Roberto Andrade Filho RA156951 LAB3 EA872
 Modificações realizadas nos arquivos
 -- LAB2
 As interfaces das classes foram modificadas conforme o LAB1: corpo agora possui campo aceleração, constante de amortecimento e constante da mola,
@@ -9,9 +9,4 @@ Foi colocado, quando o terminal tiver suporte, cor nas bolinhas oscilantes.
 --
 -- LAB3
 A função update foi atualizada para que, quando o botão W ou S for apertado, seja aplicada uma força positiva ou negativa, respectivamente.
--- 
--- LAB4
-Foi corrigida a função update, para que ela não tenha como entrada a força, esta sendo aplicada em uma função a parte, da física, chamada de adicionaForca()
-No oo_model foram adicionadas as interfaces das classes Player e do Sample; Em cpp foram adicionadas as funções dessas classes. 
-No model_mainloop, foi adicionado o comportamento de executar um som ao clicar nas teclas w ou s. 
 -- 

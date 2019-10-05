@@ -121,7 +121,7 @@ void Tela::update() {
   // Apaga corpos na tela
   for (int k=0; k<corpos_old->size(); k++)
   {
-    i = (int) ((*corpos_old)[k]->get_posicao()) * (this->maxI / this->maxX) +meio;
+    i = (int) ((*corpos_old)[k]->get_posicao()) * (this->maxI / this->maxX);// +meio;
     if( i >=0 && i <= this->maxX){
         move(i, k);
         echochar(' ');
@@ -133,7 +133,7 @@ void Tela::update() {
 
   for (int k=0; k<corpos->size(); k++)
   {
-    i = (int) ((*corpos)[k]->get_posicao()) * (this->maxI / this->maxX) + meio;
+    i = (int) ((*corpos)[k]->get_posicao()) * (this->maxI / this->maxX);// + meio;
 
     if(i >=0 && i <= this->maxX){
 	move(i, k); 

@@ -21,8 +21,8 @@ class Player {
 
 	public:
 	Player(float massa, float x, float y, float vx, float vy, float ax, float ay);
-	void update_player(float x, float y, float vx, float vy);
-	void update_player_aceleracao(float x, float y, float vx, float vy, float ax, float ay);
+	void update(float x, float y, float vx, float vy);
+	void update(float x, float y, float vx, float vy, float ax, float ay);
 	void set_massa(float massa);
 	float get_massa();
 	float get_x();
@@ -32,39 +32,6 @@ class Player {
 	float get_ax();
 	float get_ay();
 };
-
-/*
-class Corpo {
-  private:
-  float massa;
-  float velocidade;
-  float posicao;
-  float aceleracao;
-  float amortecimento;
-  float constante_mola;
-
-  public:
-  Corpo(float massa, float velocidade, float posicao, float amortecimento, float constante_mola);
-  void update(float nova_velocidade, float nova_posicao, float nova_aceleracao);
-  float get_massa();
-  float get_velocidade();
-  float get_posicao();
-  float get_aceleracao();
-  float get_constante_mola();
-  float get_amortecimento();
-};
-
-class ListaDeCorpos {
- private:
-    std::vector<Corpo*> *corpos;
-
-  public:
-    ListaDeCorpos();
-    void hard_copy(ListaDeCorpos *ldc);
-    void add_corpo(Corpo *c);
-    std::vector<Corpo*> *get_corpos();
-};
-*/
 
 class Fisica {
   private:
@@ -78,12 +45,13 @@ class Fisica {
 
 class Tela {
   private:
-    Player *jogador, *jogador_anterior;
-    int maxI, maxJ;
-    float maxX, maxY;
+    Player *jogador;
+    int largura;
+		int comprimento;
+		int tela_player;
 
   public:
-    Tela(Jogador *ldc, int maxI, int maxJ, float maxX, float maxY);
+    Tela(Player *ldc, int largura, int comprimento, int tela_player);
     ~Tela();
     void stop();
     void init();

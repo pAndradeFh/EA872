@@ -1,5 +1,5 @@
 /*
-	Paulo Roberto Andrade Filho - LAB3. RA156951
+	Paulo Roberto Andrade Filho - Projeto 1. RA156951
 */
 #include <iostream>
 #include <chrono>
@@ -7,6 +7,10 @@
 #include <vector>
 
 #include "oo_model.hpp"
+
+#define WIDTH 100
+#define HEIGTH 50
+#define SCREEN 11
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -16,56 +20,58 @@ uint64_t get_now_ms() {
 int main ()
 {
 
-  Fisica *f = new Fisica(l);
-
-  Tela *tela = new Tela(l, 20, 20, 20, 20);
+  Player *jog = new Player(20.0, WIDTH/2, HEIGTH/2, 0.0, 0.0, 0.0, 0.0);
+  Fisica *f = new Fisica(jog);
+  //
+  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN);
   tela->init();
-
+  //
   Teclado *teclado = new Teclado();
   teclado->init();
-
-
+  //
+  //
   uint64_t t0;
   uint64_t t1;
   uint64_t deltaT;
   uint64_t T;
-
+  //
   int i = 0;
-
+  //
   T = get_now_ms();
   t1 = T;
   while (1) {
-    // Atualiza timers
+  //   // Atualiza timers
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
-
-    // Atualiza modelo
-
-    // Atualiza tela
-
-    // Lê o teclado
+  //
+  //   // Atualiza modelo
+  //
+  //   // Atualiza tela
+  //
+  //   // Lê o teclado
     char c = teclado->getchar();
     if (c=='w') {
-      f->update(deltaT,500);
-    } else
-    if (c=='q') {
+      f->aplica_forca(deltaT,(float) 10.0, (float)  0.0);
+    } else if ( c == 'q') {
       break;
     } else if (c=='s'){
-      f->update(deltaT,-500);
-	} else
-	{
-       f->update(deltaT,0);
-    }
+      f->aplica_forca(deltaT,(float) 10.0, 0.0);
+    } else if (c=='a'){
+      f->aplica_forca(deltaT, (float) 0.0, (float) 10.0);
+    } else if (c=='d'){
+      f->aplica_forca(deltaT, (float) 0.0, (float) 10.0);
+    };
 
-	tela->update();
+    std::cout << jog->get_x() << jog->get_y() << '\n';
 
-    // Condicao de parada
-    if ( (t1-T) > 20000 ) break;
-    std::this_thread::sleep_for (std::chrono::milliseconds(100));
+    tela->update();
+
+    if ( (t1-T) > 10000 ) break;
+    std::this_thread::sleep_for (std::chrono::milliseconds(500));
     i++;
   }
-  tela->stop();
+ tela->stop();
   teclado->stop();
   return 0;
 }

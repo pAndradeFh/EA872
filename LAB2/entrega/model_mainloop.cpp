@@ -15,19 +15,19 @@ uint64_t get_now_ms() {
 int main ()
 {
 	Corpo *c1 = new Corpo(25, 0, 10, 1.5, 100);
-	Corpo *c2 = new Corpo(15, -32, 10, 1.5, 100);
-	Corpo *c3 = new Corpo(10, 0, 10, 1.5, 100);
-	Corpo *c4 = new Corpo(12, 0, 6, 1.5, 100);
-	Corpo *c5 = new Corpo(30, 14, -5, 1.5, 100);
-	Corpo *c6 = new Corpo(1, 100, 10, 1.5, 100);
+//	Corpo *c2 = new Corpo(15, -32, 10, 1.5, 100);
+//	Corpo *c3 = new Corpo(10, 0, 10, 1.5, 100);
+//	Corpo *c4 = new Corpo(12, 0, 6, 1.5, 100);
+//	Corpo *c5 = new Corpo(30, 14, -5, 1.5, 100);
+//	Corpo *c6 = new Corpo(1, 100, 10, 1.5, 100);
 
   ListaDeCorpos *l = new ListaDeCorpos();
 	l->add_corpo(c1);
-	l->add_corpo(c2);
-	l->add_corpo(c3);
-	l->add_corpo(c4);
-	l->add_corpo(c5);
-	l->add_corpo(c6);
+//	l->add_corpo(c2);
+//	l->add_corpo(c3);
+//	l->add_corpo(c4);
+//	l->add_corpo(c5);
+//	l->add_corpo(c6);
 
   Fisica *f = new Fisica(l);
 
