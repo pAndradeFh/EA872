@@ -21,10 +21,12 @@ int main ()
 {
 
   //Player *jog = new Player(10.0, HEIGTH/2, WIDTH/2, 0.0, 0.0, 0.0, 0.0, 1);
-  Player *jog = new Player(10.0, 6, 6, 0.0, 0.0, 0.0, 0.0, 1);
+  Player *jog = new Player(5.0, 6, 6, 0.0, 0.0, 0.0, 0.0, 1);
   Fisica *f = new Fisica(jog, 20);
+  ListComida *lc = new ListComida();
+  lc->geraListaAleatoria(1,HEIGTH,WIDTH);
   //
-  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN);
+  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc);
   tela->init();
   //
   Teclado *teclado = new Teclado();

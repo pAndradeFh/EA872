@@ -46,16 +46,42 @@ class Fisica {
 		void aplica_forca(float deltaT, float forca_x, float forca_y);
 };
 
+
+class Comida {
+	private:
+		int x;
+		int y;
+	public:
+		Comida(int x, int y);
+		~Comida();
+		int get_x();
+		int get_y();
+};
+
+
+class ListComida {
+	private:
+		std::vector<Comida*> *comidas;
+	public:
+		ListComida();
+    void hard_copy(ListComida *ldc);
+    void add_corpo(Comida *c);
+		void geraListaAleatoria(int numero, int height, int width);
+		std::vector<Comida *> *getComidas();
+};
+
 class Tela {
   private:
     Player *jogador;
     int largura;
 		int comprimento;
 		int tela_player;
+		ListComida *listaComidas;
 
   public:
-    Tela(Player *ldc, int largura, int comprimento, int tela_player);
+    Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc);
     ~Tela();
+		ListComida* get_lc();
     void stop();
     void init();
     void update();
@@ -79,25 +105,5 @@ class Teclado {
 };
 
 
-class Comida {
-	private:
-		int x;
-		int y;
-	public:
-		Comida(int x, int y);
-		~Comida();
-		int get_x();
-		int get_y();
-};
-
-
-class listComida {
-	private:
-		std::vector<Comida*> *comidas;
-	public:
-		listComida();
-    void hard_copy(listComida *ldc);
-    void add_corpo(Comida *c);
-};
 
 #endif

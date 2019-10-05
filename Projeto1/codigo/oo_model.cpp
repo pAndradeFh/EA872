@@ -160,11 +160,15 @@ void Fisica::aplica_forca(float deltaT, float forca_x, float forca_y) {
 	}
 }
 
-Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player) {
+/*
+	Construtor Tela - cria uma nova tela
+*/
+Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc) {
 	this->jogador = ldc;
 	this->largura = largura;
 	this->tela_player = tela_player;
 	this->comprimento = comprimento;
+	this->listaComidas = lc;
 }
 
 void Tela::init() {
@@ -184,6 +188,10 @@ void Tela::init() {
 	echochar('o');
 }
 
+ListComida* Tela::get_lc(){
+	return this->listaComidas;
+}
+
 void Tela::update() {
 	int x, y, meio, right_screen_bound;
 	char *char_array;
@@ -191,6 +199,21 @@ void Tela::update() {
 	x = (int)(this->jogador->get_x());
 	y = (int)(this->jogador->get_y());
 	meio = (int)(this->tela_player) / 2 + 1;
+	std::vector<Comida *> *lco = this->get_lc()->getComidas();
+
+	for (int i = 0; i<(lco)->size(); i++){
+
+		int xComida = (*lco)[i]->get_x();
+		int yComida = (*lco)[i]->get_y();
+		char xsa[64];
+		char ysa[64];
+		std::snprintf(xsa, sizeof xsa, "%i", xComida);
+		std::snprintf(ysa, sizeof ysa, "%i", yComida);
+
+		mvaddstr(9, 20, xsa);
+		mvaddstr(8, 20, ysa);
+
+	}
 
 	int right_bound = y + meio;
 	int left_bound = y - meio;
@@ -227,7 +250,7 @@ void Tela::update() {
 
 	char buffer[64];
 	char buffer2[64];
-	std::snprintf(buffer, sizeof buffer, "%i", x - meio + 1);
+	std::snprintf(buffer, sizeof buffer, "%i", (this->get_lc()->getComidas())->size());
 	std::snprintf(buffer2, sizeof buffer, "%f", this->jogador->get_x());
 
 	move(meio, meio);
@@ -260,6 +283,9 @@ void threadfun(char *keybuffer, int *control) {
 	return;
 }
 
+/*
+	Construtor Teclado - cria um novo teclado
+*/
 Teclado::Teclado() {
 }
 
