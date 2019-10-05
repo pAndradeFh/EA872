@@ -7,12 +7,13 @@
 #include <string>
 #include <iostream>
 #include <bits/stdc++.h>
-
 #include "oo_model.hpp"
-
 #include <ncurses.h>
 using namespace std::chrono;
 
+#define WIDTH 20
+#define HEIGTH 30
+#define SCREEN 11
 /*
 	Construtor Player: Cria um Player novo
 */
@@ -119,13 +120,25 @@ void Fisica::update(float deltaT) {
 	if (new_pos_x < 1) {
 		if (new_pos_y < 1) {
 			jog->update(1, 1, 0.0, 0.0, 0.0, 0.0);
+		} else if(new_pos_y > WIDTH + 1){
+			jog->update(1, WIDTH, 0.0, 0.0, 0.0, 0.0);
 		} else {
-			jog->update(1, new_pos_y, 0.0, new_vel_y, 0.0, new_aceleracao_y);
+			jog->update(1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
 		}
 	}
-	else {
+	else if(new_pos_x > HEIGTH){
+		if (new_pos_y < 1) {
+			jog->update(HEIGTH - 1, 1, 0.0, 0.0, 0.0, 0.0);
+		} else if(new_pos_y > WIDTH + 1){
+			jog->update(HEIGTH - 1, WIDTH, 0.0, 0.0, 0.0, 0.0);
+		} else {
+			jog->update(HEIGTH - 1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
+		}
+	} else {
 		if (new_pos_y < 1) {
 			jog->update(new_pos_x, 1, new_vel_x, 0.0, new_aceleracao_x, 0.0);
+		}  else if(new_pos_y > WIDTH + 1){
+			jog->update(new_pos_x, WIDTH, new_vel_x, 0.0, 0.0, 0.0);
 		} else {
 			jog->update(new_pos_x, new_pos_y, new_vel_x, new_vel_y, new_aceleracao_x, new_aceleracao_y);
 		}
@@ -147,17 +160,30 @@ void Fisica::aplica_forca(float deltaT, float forca_x, float forca_y) {
 	if (new_pos_x < 1) {
 		if (new_pos_y < 1) {
 			jog->update(1, 1, 0.0, 0.0, 0.0, 0.0);
+		} else if(new_pos_y > WIDTH + 1){
+			jog->update(1, WIDTH, 0.0, 0.0, 0.0, 0.0);
 		} else {
-			jog->update(1, new_pos_y, 0.0, new_vel_y, 0.0, new_aceleracao_y);
+			jog->update(1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
 		}
 	}
-	else {
+	else if(new_pos_x > HEIGTH){
+		if (new_pos_y < 1) {
+			jog->update(HEIGTH - 1, 1, 0.0, 0.0, 0.0, 0.0);
+		} else if(new_pos_y > WIDTH + 1){
+			jog->update(HEIGTH - 1, WIDTH, 0.0, 0.0, 0.0, 0.0);
+		} else {
+			jog->update(HEIGTH - 1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
+		}
+	} else {
 		if (new_pos_y < 1) {
 			jog->update(new_pos_x, 1, new_vel_x, 0.0, new_aceleracao_x, 0.0);
+		}  else if(new_pos_y > WIDTH + 1){
+			jog->update(new_pos_x, WIDTH, new_vel_x, 0.0, 0.0, 0.0);
 		} else {
 			jog->update(new_pos_x, new_pos_y, new_vel_x, new_vel_y, new_aceleracao_x, new_aceleracao_y);
 		}
 	}
+
 }
 
 /*
@@ -199,21 +225,28 @@ void Tela::update() {
 	x = (int)(this->jogador->get_x());
 	y = (int)(this->jogador->get_y());
 	meio = (int)(this->tela_player) / 2 + 1;
-	std::vector<Comida *> *lco = this->get_lc()->getComidas();
+	std::vector<Comida *> *lco = this->listaComidas->getComidas();
 
-	for (int i = 0; i<(lco)->size(); i++){
-
-		int xComida = (*lco)[i]->get_x();
-		int yComida = (*lco)[i]->get_y();
-		char xsa[64];
-		char ysa[64];
-		std::snprintf(xsa, sizeof xsa, "%i", xComida);
-		std::snprintf(ysa, sizeof ysa, "%i", yComida);
-
-		mvaddstr(9, 20, xsa);
-		mvaddstr(8, 20, ysa);
-
+	clear();
+	for (int i = 0; i<lco->size(); i++){
+		int x_com = (int)((*lco)[i]->get_x());
+		int y_com = (int)((*lco)[i]->get_y());
+		if(x_com - x <= meio-1 && y_com - y <= meio-1 ){
+			mvaddch(x_com - x + meio, y_com - y + meio,  '*');
+		}
 	}
+
+	// char xsa[64];
+	// std::snprintf(xsa, sizeof xsa, "%d", (*lco)[0]->get_x());
+	// mvaddstr(9, 20, xsa);
+	//
+	// char xsa1[64];
+	// std::snprintf(xsa1, sizeof xsa1, "%i", (*lco)[1]->get_x());
+	// mvaddstr(10, 20, xsa1);
+	//
+	// char xsa2[64];
+	// std::snprintf(xsa2, sizeof xsa2, "%i", (*lco)[2]->get_x());
+	// mvaddstr(11, 20, xsa2);
 
 	int right_bound = y + meio;
 	int left_bound = y - meio;
@@ -224,7 +257,11 @@ void Tela::update() {
 		mvaddstr(meio - x - 1, 0, "           ");
 		mvaddstr(meio - x, 0, "===========");
 		mvaddstr(meio - x + 1, 0, "           ");
-	} else {
+	} else if(bottom_bound >= HEIGTH){
+		mvaddstr(HEIGTH + meio - x - 1, 0, "           ");
+		mvaddstr(HEIGTH + meio - x, 0, "===========");
+		mvaddstr(HEIGTH + meio - x + 1, 0, "           ");
+	} {
 		mvaddstr(0, 0, "           ");
 	}
 
@@ -241,23 +278,27 @@ void Tela::update() {
 			move(i, meio - y + 1);
 			echochar(' ');
 		}
+	} else if(right_bound >= WIDTH){
+		for (int i = 0; i < this->tela_player; i++) {
+			move(i, WIDTH + meio - y + 1);
+			echochar('|');
+		}
+		for (int i = 0; i < this->tela_player; i++) {
+			move(i, WIDTH + meio - y );
+			echochar(' ');
+		}
+		for (int i = 0; i < this->tela_player; i++) {
+			move(i, WIDTH + meio - y + 2);
+			echochar(' ');
+		}
 	} else {
 		for (int i = 0; i < this->tela_player; i++) {
 			move(i, 0);
 			echochar(' ');
 		}
 	}
-
-	char buffer[64];
-	char buffer2[64];
-	std::snprintf(buffer, sizeof buffer, "%i", (this->get_lc()->getComidas())->size());
-	std::snprintf(buffer2, sizeof buffer, "%f", this->jogador->get_x());
-
 	move(meio, meio);
 	echochar('o');
-
-	mvaddstr(10, 0, buffer);
-	mvaddstr(11, 0, buffer2);
 }
 
 void Tela::stop() {

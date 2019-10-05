@@ -8,8 +8,8 @@
 
 #include "oo_model.hpp"
 
-#define WIDTH 100
-#define HEIGTH 50
+#define WIDTH 20
+#define HEIGTH 30
 #define SCREEN 11
 
 using namespace std::chrono;
@@ -19,12 +19,12 @@ uint64_t get_now_ms() {
 
 int main ()
 {
-
+  srand(time(NULL));
   //Player *jog = new Player(10.0, HEIGTH/2, WIDTH/2, 0.0, 0.0, 0.0, 0.0, 1);
-  Player *jog = new Player(5.0, 6, 6, 0.0, 0.0, 0.0, 0.0, 1);
+  Player *jog = new Player(5.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
   Fisica *f = new Fisica(jog, 20);
   ListComida *lc = new ListComida();
-  lc->geraListaAleatoria(1,HEIGTH,WIDTH);
+  lc->geraListaAleatoria(20,HEIGTH,WIDTH);
   //
   Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc);
   tela->init();
@@ -49,15 +49,15 @@ int main ()
 
     char c = teclado->getchar();
     if (c=='w') {
-      f->aplica_forca(deltaT, -10.0, 0.0);
+      f->aplica_forca(deltaT, -15.0, 0.0);
     } else if ( c == 'q') {
       break;
     } else if (c=='s'){
-      f->aplica_forca(deltaT, 10.0, 0.0);
+      f->aplica_forca(deltaT, 15.0, 0.0);
     } else if (c=='a'){
-      f->aplica_forca(deltaT, 0.0, -10.0);
+      f->aplica_forca(deltaT, 0.0, -15.0);
     } else if (c=='d'){
-      f->aplica_forca(deltaT, 0.0, 10.0);
+      f->aplica_forca(deltaT, 0.0, 15.0);
     } else {
       f->update(deltaT);
     }
