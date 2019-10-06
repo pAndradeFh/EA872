@@ -1,5 +1,5 @@
 /*
-	Paulo Roberto Andrade Filho - LAB3. RA156951
+	Paulo Roberto Andrade Filho - PROJETO1. RA156951
 */
 #include <vector>
 #include <chrono>
@@ -75,7 +75,7 @@ float Player::get_am() {
 	Setters Player
 */
 // update a massa do jogador
-void Player::set_massa(float massa) {
+void Player::update(float massa) {
 	this->massa = massa;
 }
 
@@ -224,11 +224,12 @@ void Tela::update() {
 
 	x = (int)(this->jogador->get_x());
 	y = (int)(this->jogador->get_y());
+	float massa = (float)(this->jogador->get_massa());
 	meio = (int)(this->tela_player) / 2 + 1;
 	std::vector<Comida *> *lco = this->listaComidas->getComidas();
 
 	clear();
-	for (int i = 0; i<lco->size(); i++){
+	for (int i = 0; i<lco->size(); i++) {
 		int x_com = (int)((*lco)[i]->get_x());
 		int y_com = (int)((*lco)[i]->get_y());
 		if(x_com - x <= meio-1 && y_com - y <= meio-1 ){
@@ -236,9 +237,9 @@ void Tela::update() {
 		}
 	}
 
-	// char xsa[64];
-	// std::snprintf(xsa, sizeof xsa, "%d", (*lco)[0]->get_x());
-	// mvaddstr(9, 20, xsa);
+	char xsa[64];
+	std::snprintf(xsa, sizeof xsa, "%f", this->jogador->get_massa());
+	mvaddstr(12, 0, xsa);
 	//
 	// char xsa1[64];
 	// std::snprintf(xsa1, sizeof xsa1, "%i", (*lco)[1]->get_x());
@@ -261,7 +262,7 @@ void Tela::update() {
 		mvaddstr(HEIGTH + meio - x - 1, 0, "           ");
 		mvaddstr(HEIGTH + meio - x, 0, "===========");
 		mvaddstr(HEIGTH + meio - x + 1, 0, "           ");
-	} {
+	} else  {
 		mvaddstr(0, 0, "           ");
 	}
 
@@ -297,8 +298,55 @@ void Tela::update() {
 			echochar(' ');
 		}
 	}
-	move(meio, meio);
-	echochar('o');
+
+		move(meio, meio);
+		echochar('o');
+
+	if(massa >= 20){
+		move(meio - 1, meio);
+		echochar('o');
+	}
+
+	if(massa >= 30){
+		move(meio - 1, meio + 1);
+		echochar('o');
+	}
+
+	if(massa >= 40){
+		move(meio, meio + 1);
+		echochar('o');
+	}
+
+	if(massa >= 50){
+		move(meio - 1, meio + 1);
+		echochar('o');
+	}
+
+	if(massa >= 60){
+		move(meio+1, meio + 1);
+		echochar('o');
+	}
+
+	if(massa >= 70){
+		move(meio+1, meio);
+		echochar('o');
+	}
+
+	if(massa >= 80){
+		move(meio+1, meio - 1);
+		echochar('o');
+	}
+
+	if(massa >= 90){
+		move(meio, meio - 1);
+		echochar('o');
+	}
+
+	if(massa >= 100){
+		move(meio-1, meio - 1);
+		echochar('o');
+	}
+
 }
 
 void Tela::stop() {

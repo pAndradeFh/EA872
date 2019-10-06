@@ -38,7 +38,6 @@ void ListComida::add_corpo(Comida *c){
   (this->getComidas())->push_back(c);
 }
 
-
 void ListComida::geraListaAleatoria(int numero, int height, int width){
   std::vector<Comida *> *coms = this->getComidas();
   for (int i=1; i<= numero; i++){

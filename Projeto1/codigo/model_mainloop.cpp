@@ -1,5 +1,5 @@
 /*
-	Paulo Roberto Andrade Filho - Projeto 1. RA156951
+	Paulo Roberto Andrade Filho - PROJETO1. RA156951
 */
 #include <iostream>
 #include <chrono>
@@ -11,6 +11,7 @@
 #define WIDTH 20
 #define HEIGTH 30
 #define SCREEN 11
+#define FORCA 25
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -20,10 +21,12 @@ uint64_t get_now_ms() {
 int main ()
 {
   srand(time(NULL));
+
   //Player *jog = new Player(10.0, HEIGTH/2, WIDTH/2, 0.0, 0.0, 0.0, 0.0, 1);
-  Player *jog = new Player(5.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
+  Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
   Fisica *f = new Fisica(jog, 20);
   ListComida *lc = new ListComida();
+  GameController *gc = new GameController(lc,jog);
   lc->geraListaAleatoria(20,HEIGTH,WIDTH);
   //
   Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc);
@@ -46,18 +49,18 @@ int main ()
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
-
+    gc->verifica_e_realiza_captura();
     char c = teclado->getchar();
     if (c=='w') {
-      f->aplica_forca(deltaT, -15.0, 0.0);
+      f->aplica_forca(deltaT, -FORCA, 0.0);
     } else if ( c == 'q') {
       break;
     } else if (c=='s'){
-      f->aplica_forca(deltaT, 15.0, 0.0);
+      f->aplica_forca(deltaT, FORCA, 0.0);
     } else if (c=='a'){
-      f->aplica_forca(deltaT, 0.0, -15.0);
+      f->aplica_forca(deltaT, 0.0, -FORCA);
     } else if (c=='d'){
-      f->aplica_forca(deltaT, 0.0, 15.0);
+      f->aplica_forca(deltaT, 0.0, FORCA);
     } else {
       f->update(deltaT);
     }

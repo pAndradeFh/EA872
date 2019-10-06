@@ -24,7 +24,7 @@ class Player {
 	Player(float massa, float x, float y, float vx, float vy, float ax, float ay, float am);
 	void update(float x, float y, float vx, float vy);
 	void update(float x, float y, float vx, float vy, float ax, float ay);
-	void set_massa(float massa);
+	void update(float massa);
 	float get_massa();
 	float get_x();
 	float get_y();
@@ -104,6 +104,12 @@ class Teclado {
     char getchar();
 };
 
-
+class GameController {
+	public:
+		GameController(ListComida *lista_de_comidas, Player *ldc);
+		ListComida *lista_de_comidas;
+		Player *jogador;
+		void verifica_e_realiza_captura();
+};
 
 #endif
