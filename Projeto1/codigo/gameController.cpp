@@ -20,6 +20,7 @@ void GameController::verifica_e_realiza_captura(){
   std::vector<Comida *> *lc = this->lista_de_comidas->getComidas();
   float massa = jogador->get_massa();
   for(int i = 0; i < (lc)->size(); i ++){
+
     if((int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
@@ -40,32 +41,27 @@ void GameController::verifica_e_realiza_captura(){
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=50 && (int)((*lc)[i]->get_x()-1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()+1) == (int)(jogador->get_y())){
+    if(massa>=50 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()+1) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=60 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()+1) == (int)(jogador->get_y())){
+    if(massa>=60 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=70 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())){
+    if(massa>=70 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=80 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
+    if(massa>=80 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=90 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
-      (lc)->erase((lc)->begin()+i);
-      jogador->update(jogador->get_massa()+10);
-    }
-
-    if(massa>=100 && (int)((*lc)[i]->get_x()-1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
+    if(massa>=90 && (int)((*lc)[i]->get_x()-1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }

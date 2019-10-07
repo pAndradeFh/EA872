@@ -11,7 +11,7 @@
 #define WIDTH 20
 #define HEIGTH 30
 #define SCREEN 11
-#define FORCA 25
+#define FORCA 50
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -68,7 +68,7 @@ int main ()
     tela->update();
 
     if ( (t1-T) > 40000 ) break;
-    std::this_thread::sleep_for (std::chrono::milliseconds(100));
+    std::this_thread::sleep_for (std::chrono::milliseconds(50));
     i++;
   }
   tela->stop();

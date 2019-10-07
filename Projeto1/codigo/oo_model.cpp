@@ -6,6 +6,7 @@
 #include <thread>
 #include <string>
 #include <iostream>
+#include <portaudio.h>
 #include <bits/stdc++.h>
 #include "oo_model.hpp"
 #include <ncurses.h>
@@ -14,177 +15,6 @@ using namespace std::chrono;
 #define WIDTH 20
 #define HEIGTH 30
 #define SCREEN 11
-/*
-	Construtor Player: Cria um Player novo
-*/
-Player::Player(float massa, float x, float y, float vx, float vy, float ax, float ay, float am) {
-	this->massa = massa;
-	this->posicao_x = x;
-	this->posicao_y = y;
-	this->velocidade_x = vx;
-	this->velocidade_y = vy;
-	this->aceleracao_x = ax;
-	this->aceleracao_y = ay;
-	this->amortecimento = am;
-}
-
-/*
-	Getters Player
-*/
-// Get massa
-float Player::get_massa() {
-	return this->massa;
-}
-
-//	Get posicao x
-float Player::get_x() {
-	return this->posicao_x;
-}
-
-//	Get posicao y
-float Player::get_y() {
-	return this->posicao_y;
-}
-
-//	Get velocidade x
-float Player::get_vx() {
-	return this->velocidade_x;
-}
-
-//	Get velocidade y
-float Player::get_vy() {
-	return this->velocidade_y;
-}
-
-//	Get aceleracao_x
-float Player::get_ax() {
-	return this->aceleracao_x;
-}
-
-//	Get aceleracao_y
-float Player::get_ay() {
-	return this->aceleracao_y;
-}
-
-//	Get amortecimento
-float Player::get_am() {
-	return this->amortecimento;
-}
-
-/*
-	Setters Player
-*/
-// update a massa do jogador
-void Player::update(float massa) {
-	this->massa = massa;
-}
-
-// update as posicoes e as velocidades do jogador
-void Player::update(float x, float y, float vx, float vy) {
-	this->posicao_x = x;
-	this->posicao_y = y;
-	this->velocidade_x = vx;
-	this->velocidade_y = vy;
-}
-
-// Update as posicoes, velocidades e aceleracoes
-void Player::update(float x, float y, float vx, float vy, float ax, float ay) {
-	this->posicao_x = x;
-	this->posicao_y = y;
-	this->velocidade_x = vx;
-	this->velocidade_y = vy;
-	this->aceleracao_x = ax;
-	this->aceleracao_y = ay;
-}
-
-/*
-	Construtor Fisica - cria uma nova fisica
-*/
-Fisica::Fisica(Player *jogador, float max_vel) {
-	this->jogador = jogador;
-	this->max_vel = max_vel;
-}
-
-//	Atualiza o modelo físico
-void Fisica::update(float deltaT) {
-	Player *jog = this->jogador;
-	float new_vel_x = jog->get_vx() + (float)deltaT * jog->get_ax() / 1000;
-	float new_vel_y = jog->get_vy() + (float)deltaT * jog->get_ay() / 1000;
-
-	float new_pos_x = jog->get_x() + (float)deltaT * new_vel_x / 1000;
-	float new_pos_y = jog->get_y() + (float)deltaT * new_vel_y / 1000;
-
-	float new_aceleracao_x = (-jog->get_am() * new_vel_x) / jog->get_massa();
-	float new_aceleracao_y = (-jog->get_am() * new_vel_y) / jog->get_massa();
-
-	if (new_pos_x < 1) {
-		if (new_pos_y < 1) {
-			jog->update(1, 1, 0.0, 0.0, 0.0, 0.0);
-		} else if(new_pos_y > WIDTH + 1){
-			jog->update(1, WIDTH, 0.0, 0.0, 0.0, 0.0);
-		} else {
-			jog->update(1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
-		}
-	}
-	else if(new_pos_x > HEIGTH){
-		if (new_pos_y < 1) {
-			jog->update(HEIGTH - 1, 1, 0.0, 0.0, 0.0, 0.0);
-		} else if(new_pos_y > WIDTH + 1){
-			jog->update(HEIGTH - 1, WIDTH, 0.0, 0.0, 0.0, 0.0);
-		} else {
-			jog->update(HEIGTH - 1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
-		}
-	} else {
-		if (new_pos_y < 1) {
-			jog->update(new_pos_x, 1, new_vel_x, 0.0, new_aceleracao_x, 0.0);
-		}  else if(new_pos_y > WIDTH + 1){
-			jog->update(new_pos_x, WIDTH, new_vel_x, 0.0, 0.0, 0.0);
-		} else {
-			jog->update(new_pos_x, new_pos_y, new_vel_x, new_vel_y, new_aceleracao_x, new_aceleracao_y);
-		}
-	}
-}
-
-//	Aplica uma força ao corpo
-void Fisica::aplica_forca(float deltaT, float forca_x, float forca_y) {
-	Player *jog = this->jogador;
-	float new_vel_x = jog->get_vx() + (float)deltaT * jog->get_ax() / 1000;
-	float new_vel_y = jog->get_vy() + (float)deltaT * jog->get_ay() / 1000;
-
-	float new_pos_x = jog->get_x() + (float)deltaT * new_vel_x / 1000;
-	float new_pos_y = jog->get_y() + (float)deltaT * new_vel_y / 1000;
-
-	float new_aceleracao_x = (forca_x - jog->get_am() * new_vel_x) / jog->get_massa();
-	float new_aceleracao_y = (forca_y - jog->get_am() * new_vel_y) / jog->get_massa();
-
-	if (new_pos_x < 1) {
-		if (new_pos_y < 1) {
-			jog->update(1, 1, 0.0, 0.0, 0.0, 0.0);
-		} else if(new_pos_y > WIDTH + 1){
-			jog->update(1, WIDTH, 0.0, 0.0, 0.0, 0.0);
-		} else {
-			jog->update(1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
-		}
-	}
-	else if(new_pos_x > HEIGTH){
-		if (new_pos_y < 1) {
-			jog->update(HEIGTH - 1, 1, 0.0, 0.0, 0.0, 0.0);
-		} else if(new_pos_y > WIDTH + 1){
-			jog->update(HEIGTH - 1, WIDTH, 0.0, 0.0, 0.0, 0.0);
-		} else {
-			jog->update(HEIGTH - 1, new_pos_y, 0.0, new_vel_y, 0.0, 0);
-		}
-	} else {
-		if (new_pos_y < 1) {
-			jog->update(new_pos_x, 1, new_vel_x, 0.0, new_aceleracao_x, 0.0);
-		}  else if(new_pos_y > WIDTH + 1){
-			jog->update(new_pos_x, WIDTH, new_vel_x, 0.0, 0.0, 0.0);
-		} else {
-			jog->update(new_pos_x, new_pos_y, new_vel_x, new_vel_y, new_aceleracao_x, new_aceleracao_y);
-		}
-	}
-
-}
 
 /*
 	Construtor Tela - cria uma nova tela
@@ -240,14 +70,6 @@ void Tela::update() {
 	char xsa[64];
 	std::snprintf(xsa, sizeof xsa, "%f", this->jogador->get_massa());
 	mvaddstr(12, 0, xsa);
-	//
-	// char xsa1[64];
-	// std::snprintf(xsa1, sizeof xsa1, "%i", (*lco)[1]->get_x());
-	// mvaddstr(10, 20, xsa1);
-	//
-	// char xsa2[64];
-	// std::snprintf(xsa2, sizeof xsa2, "%i", (*lco)[2]->get_x());
-	// mvaddstr(11, 20, xsa2);
 
 	int right_bound = y + meio;
 	int left_bound = y - meio;
@@ -318,35 +140,29 @@ void Tela::update() {
 	}
 
 	if(massa >= 50){
-		move(meio - 1, meio + 1);
+		move(meio + 1, meio + 1);
 		echochar('o');
 	}
 
 	if(massa >= 60){
-		move(meio+1, meio + 1);
+		move(meio + 1, meio);
 		echochar('o');
 	}
 
 	if(massa >= 70){
-		move(meio+1, meio);
-		echochar('o');
-	}
-
-	if(massa >= 80){
 		move(meio+1, meio - 1);
 		echochar('o');
 	}
 
-	if(massa >= 90){
+	if(massa >= 80){
 		move(meio, meio - 1);
 		echochar('o');
 	}
 
-	if(massa >= 100){
-		move(meio-1, meio - 1);
+	if(massa >= 90){
+		move(meio - 1, meio - 1);
 		echochar('o');
 	}
-
 }
 
 void Tela::stop() {
