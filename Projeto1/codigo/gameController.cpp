@@ -6,7 +6,7 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include <stdlib.h>
-#include "oo_model.hpp"
+#include "modelos.hpp"
 #include <ncurses.h>
 using namespace std::chrono;
 

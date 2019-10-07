@@ -5,7 +5,7 @@
 #include <iostream>
 #include <portaudio.h>
 #include <bits/stdc++.h>
-#include "oo_model.hpp"
+#include "modelos.hpp"
 #include <ncurses.h>
 using namespace std::chrono;
 

@@ -1,6 +1,3 @@
-/*
-	Paulo Roberto Andrade Filho - PROJETO1. RA156951
-*/
 #include <vector>
 #include <chrono>
 #include <thread>
@@ -8,7 +5,7 @@
 #include <iostream>
 #include <portaudio.h>
 #include <bits/stdc++.h>
-#include "oo_model.hpp"
+#include "modelos.hpp"
 #include <ncurses.h>
 using namespace std::chrono;
 
@@ -168,6 +165,14 @@ void Tela::update() {
 void Tela::stop() {
 	endwin();
 }
+
+int Tela::menu(){
+  mvaddstr(0, 0, "WELCOME TO AGAR.IO (REMASTERED)");
+  mvaddstr(1, 0, "TYPE 't' TO TIME RUN");
+  mvaddstr(2, 0, "TYPE 'e' TO ESCAPE RUN");
+  mvaddstr(3, 0, "TYPE 'q' TO EXIT");
+}
+
 
 Tela::~Tela() {
 	this->stop();

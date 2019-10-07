@@ -85,6 +85,7 @@ class Tela {
     void stop();
     void init();
     void update();
+		int menu();
 };
 
 void threadfun (char *keybuffer, int *control);

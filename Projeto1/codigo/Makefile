@@ -2,6 +2,6 @@ FLAGS=-lncurses -lpthread -std=c++11
 
 all: model
 
-model: model_mainloop.cpp oo_model.cpp oo_model.hpp listComida.cpp gameController.cpp player.cpp fisica.cpp
-	g++ -omodel model_mainloop.cpp oo_model.cpp listComida.cpp gameController.cpp player.cpp fisica.cpp $(FLAGS)
+model: main.cpp oo.cpp modelos.hpp comida.cpp gameController.cpp player.cpp fisica.cpp
+	g++ -omodel main.cpp oo.cpp comida.cpp gameController.cpp player.cpp fisica.cpp $(FLAGS)
 	./model
