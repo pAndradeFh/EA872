@@ -1,12 +1,9 @@
-#include <vector>
 #include <chrono>
-#include <thread>
-#include <string>
-#include <iostream>
-#include <portaudio.h>
-#include <bits/stdc++.h>
-#include "modelos.hpp"
+#include "player.hpp"
+#include "comida.hpp"
+#include "io.hpp"
 #include <ncurses.h>
+
 using namespace std::chrono;
 
 #define WIDTH 20

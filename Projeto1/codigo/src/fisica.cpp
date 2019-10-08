@@ -1,18 +1,13 @@
-#include <vector>
 #include <chrono>
-#include <thread>
-#include <string>
-#include <iostream>
-#include <portaudio.h>
-#include <bits/stdc++.h>
-#include "modelos.hpp"
+
+#include "fisica.hpp"
+#include "player.hpp"
 #include <ncurses.h>
 using namespace std::chrono;
 
 #define WIDTH 20
 #define HEIGTH 30
 #define SCREEN 11
-
 
 /*
 	Construtor Fisica - cria uma nova fisica

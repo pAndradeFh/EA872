@@ -1,15 +1,8 @@
 /*
 	Paulo Roberto Andrade Filho - PROJETO 1. RA156951
 */
-#include <vector>
 #include <chrono>
-#include <thread>
-#include <time.h>
-#include <string>
-#include <iostream>
-#include <bits/stdc++.h>
-#include <stdlib.h>
-#include "modelos.hpp"
+#include "comida.hpp"
 #include <ncurses.h>
 using namespace std::chrono;
 

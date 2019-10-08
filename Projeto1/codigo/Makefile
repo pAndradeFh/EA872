@@ -1,7 +1,17 @@
-FLAGS=-lncurses -lpthread -std=c++11
+DIR = src/
+HPP := $(wildcard $(DIR)*.hpp)
+SRC := $(wildcard $(DIR)*.cpp)
+EXE = tanks.ea
+FLAGS = -std=c++11 -lncurses -lpthread -lportaudio
 
-all: model
 
-model: main.cpp oo.cpp modelos.hpp comida.cpp gameController.cpp player.cpp fisica.cpp
-	g++ -omodel main.cpp oo.cpp comida.cpp gameController.cpp player.cpp fisica.cpp $(FLAGS)
-	./model
+all: $(EXE)
+
+$(EXE): $(SRC) $(HPP)
+	g++ $(SRC) -o $(EXE) $(FLAGS)
+
+play: $(EXE)
+	./$(EXE) 2>warning.log
+
+clear: $(EXE)
+	rm $(EXE)

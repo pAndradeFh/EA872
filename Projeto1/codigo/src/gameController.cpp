@@ -1,27 +1,8 @@
-#include <vector>
 #include <chrono>
-#include <thread>
-#include <time.h>
-#include <string>
-#include <iostream>
-#include <bits/stdc++.h>
-#include <stdlib.h>
-#include "modelos.hpp"
+#include "gameController.hpp"
+#include "player.hpp"
 #include <ncurses.h>
 using namespace std::chrono;
-
-int Enemy::get_x(){
-  return this->x;
-}
-
-int Enemy::get_y(){
-  return this->y;
-}
-
-Enemy::Enemy(int x, int y){
-  this->x = x;
-  this->y = y;
-}
 
 
 GameController::GameController(ListComida *lista_de_comidas, Player *jog, Enemy * enemy){

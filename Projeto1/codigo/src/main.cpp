@@ -1,12 +1,22 @@
 /*
 	Paulo Roberto Andrade Filho - PROJETO1. RA156951
 */
-#include <iostream>
+#include <vector>
 #include <chrono>
 #include <thread>
-#include <vector>
+#include <time.h>
+#include <string>
+#include <iostream>
+#include <bits/stdc++.h>
+#include <stdlib.h>
+#include <ncurses.h>
 
-#include "modelos.hpp"
+#include "audio.hpp"
+#include "comida.hpp"
+#include "player.hpp"
+#include "gameController.hpp"
+#include "io.hpp"
+#include "fisica.hpp"
 
 #define WIDTH 20
 #define HEIGTH 30

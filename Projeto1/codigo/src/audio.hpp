@@ -1,3 +1,9 @@
+#ifndef AUDIO_HPP
+#define AUDIO_HPP
+
+#include "portaudio.h"
+#include <vector>
+
 namespace Audio {
 
 class Sample {
@@ -41,3 +47,5 @@ class Player {
 };
 
 }
+
+#endif
