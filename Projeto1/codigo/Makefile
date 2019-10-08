@@ -1,17 +1,8 @@
-DIR = src/
-HPP := $(wildcard $(DIR)*.hpp)
-SRC := $(wildcard $(DIR)*.cpp)
-EXE = tanks.ea
-FLAGS = -std=c++11 -lncurses -lpthread -lportaudio
-
+SRC := $(wildcard src/*.cpp)
+BIB := $(wildcard src/*.hpp)
+EXE = agario
 
 all: $(EXE)
 
-$(EXE): $(SRC) $(HPP)
-	g++ $(SRC) -o $(EXE) $(FLAGS)
-
-play: $(EXE)
-	./$(EXE) 2>warning.log
-
-clear: $(EXE)
-	rm $(EXE)
+$(EXE): $(SRC) $(BIB)
+	g++ $(SRC) -o $(EXE) -std=c++11 -lncurses -lpthread -lportaudio

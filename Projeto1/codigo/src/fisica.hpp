@@ -1,6 +1,8 @@
 #ifndef FISICA_HPP
 #define FISICA_HPP
 
+#include "player.hpp"
+
 class Fisica {
   private:
     Player *jogador;
