@@ -137,16 +137,16 @@ void Player::init() {
                          mix_and_play,
                          this );
 
-  if( err != paNoError ) {
-    std::cerr << "Error on Pa_OpenStream()" << std::endl;
-    return;
-  }
-
-  err = Pa_StartStream( stream );
-  if( err != paNoError ) {
-    std::cerr << "Error on Pa_StartStream()" << std::endl;
-    return;
-  }
+  // if( err != paNoError ) {
+  //   std::cerr << "Error on Pa_OpenStream()" << std::endl;
+  //   return;
+  // }
+  //
+  // err = Pa_StartStream( stream );
+  // if( err != paNoError ) {
+  //   std::cerr << "Error on Pa_StartStream()" << std::endl;
+  //   return;
+  // }
 
 
 }
@@ -154,16 +154,16 @@ void Player::init() {
 void Player::stop() {
   PaError err;
   err = Pa_StopStream( stream );
-  if( err != paNoError ) {
-    std::cerr << "Error on Pa_StopStream()" << std::endl;
-    return;
-  }
+  // if( err != paNoError ) {
+  //   std::cerr << "Error on Pa_StopStream()" << std::endl;
+  //   return;
+  // }
 
   err = Pa_CloseStream( stream );
-  if( err != paNoError ) {
-    std::cerr << "Error on Pa_StopStream()" << std::endl;
-    return;
-  }
+  // if( err != paNoError ) {
+  //   std::cerr << "Error on Pa_StopStream()" << std::endl;
+  //   return;
+  // }
 
   Pa_Terminate();
 

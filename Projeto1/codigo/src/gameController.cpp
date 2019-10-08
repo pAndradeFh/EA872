@@ -35,7 +35,7 @@ int GameController::verifica_e_realiza_captura(){
   if(massa >= 10 && e_x == jx && e_y == jy){
     return 0;
   }
-  
+
   if(massa >= 20 && e_x == jx - 1 && e_y == jy){
     return 0;
   }
@@ -61,9 +61,13 @@ int GameController::verifica_e_realiza_captura(){
     return 0;
   }
 
+  if(massa>=100){
+    return 1;
+  }
+
   //  Realiza movimentos aleatorios do inimigo na direção do player
   int xrand = rand() % 200 + 1;
-  if (xrand <= 6){
+  if (xrand <= 8){
     int new_x, new_y;
     if(e_x < jogador->get_x()){
       new_x = e_x + 1;
@@ -89,45 +93,44 @@ int GameController::verifica_e_realiza_captura(){
       jogador->update(jogador->get_massa() + 10);
     }
 
-    if(massa>=20 && (int)((*lc)[i]->get_x()-1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())) {
+    if(massa >= 20 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x() - 1) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())) {
+      (lc)->erase((lc)->begin()+i);
+      jogador->update(jogador->get_massa() + 10);
+    }
+
+    if(massa >= 30 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x() - 1) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y() + 1)){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=30 && (int)((*lc)[i]->get_x()-1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()+1) == (int)(jogador->get_y())){
+    if(massa>=40 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y()+ 1 )){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=40 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()+1) == (int)(jogador->get_y())){
+    if(massa>=50 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x() + 1) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y() + 1)){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=50 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()+1) == (int)(jogador->get_y())){
+    if(massa>=60 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x() + 1) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=60 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y())){
+    if(massa>=70 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x() + 1) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y() - 1)){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=70 && (int)((*lc)[i]->get_x()+1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
+    if(massa>=80 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y()-1)){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
     }
 
-    if(massa>=80 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
+    if(massa>=90 && (int)((*lc)[i]->get_x()) == (int)(jogador->get_x()-1) && (int)((*lc)[i]->get_y()) == (int)(jogador->get_y()-1)){
       (lc)->erase((lc)->begin()+i);
       jogador->update(jogador->get_massa()+10);
-    }
-
-    if(massa>=90 && (int)((*lc)[i]->get_x()-1) == (int)(jogador->get_x()) && (int)((*lc)[i]->get_y()-1) == (int)(jogador->get_y())){
-      (lc)->erase((lc)->begin()+i);
-      jogador->update(jogador->get_massa()+10);
-      return 1;
     }
   }
   return 3;

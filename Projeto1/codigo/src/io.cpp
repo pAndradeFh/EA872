@@ -26,27 +26,29 @@ Enemy *Tela::get_enemy(){
 	return this->enemy;
 }
 
+//inicia a tela
 void Tela::init() {
 	int i;
 	initscr();
+	raw();
+	curs_set(0);
 	if (has_colors() == FALSE) { }
 	else {
 		start_color();
-		init_pair(1, COLOR_RED, COLOR_BLACK);
-		attron(COLOR_PAIR(0));
+		init_pair(1, COLOR_BLACK, COLOR_WHITE);
+		attron(COLOR_PAIR(1));
 	}
-
-	i = (int)this->tela_player / 2 + 1;
-	raw();
-	curs_set(0);
-	move(i, i);
-	echochar('o');
+	erase();
+	refresh();
 }
 
 ListComida* Tela::get_lc(){
 	return this->listaComidas;
 }
 
+//
+//	Classe Tela - view que apenas mostra as informações
+//
 void Tela::update(int tempo) {
 	int x, y, meio, right_screen_bound, x_e, y_e;
 	char *char_array;
@@ -150,12 +152,14 @@ void Tela::update(int tempo) {
 		move(meio - 1, meio - 1);
 		echochar('o');
 	}
+	refresh();
 }
 
 void Tela::stop() {
 	endwin();
 }
 
+// funçoes auxiliares para mostrar mensagens
 void Tela::menu(){
   mvaddstr(0, 0, "WELCOME TO AGAR.IO (REMASTERED)");
   mvaddstr(1, 0, "TYPE 't' TO TIME RUN");
@@ -165,7 +169,7 @@ void Tela::menu(){
 
 void Tela::msg(){
 	mvaddstr(5, 0, "================================================");
-	mvaddstr(6, 0, "GET 40 PTS (*) AND RUN FROM ENEMIES (+) IN 30 s.");
+	mvaddstr(6, 0, "GET 100 PTS (*) AND RUN FROM ENEMIES (+) IN 30 s.");
 	mvaddstr(7, 0, "================================================");
 }
 

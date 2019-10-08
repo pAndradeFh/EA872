@@ -21,7 +21,7 @@
 #define WIDTH 20
 #define HEIGTH 30
 #define SCREEN 11
-#define FORCA 50
+#define FORCA 65
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -41,8 +41,8 @@ int main ()
   defeat->load("assets/defeat.dat");
 
   Audio::Player *player = new Audio::Player();
-  // player->init();
-  // player->play(mainTheme);
+  player->init();
+  player->play(mainTheme);
 
   //Gera um jogador em uma posição especifica
   Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
@@ -104,6 +104,7 @@ int main ()
         if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0);
         } else if ( c == 'q') {
+          ganhou = 0;
           break;
         } else if (c=='s'){
           f->aplica_forca(deltaT, FORCA, 0.0);
@@ -115,20 +116,26 @@ int main ()
           f->update(deltaT);
         }
         tela->update((int)(t1-T));
-        if ( (t1-T) > 20000 ) {
+        if ( (t1-T) > 30000 ) {
           ganhou = 0;
         };
         std::this_thread::sleep_for (std::chrono::milliseconds(50));
         i++;
       }
-
+    if(ganhou == 0){
+        player->pause();
+        player->play(defeat);
+    } else {
+      player->pause();
+      player->play(victory);
+    }
     // mostra mensagem de derrota ou vitória
     tela->vitoria_ou_derrota(ganhou);
     std::this_thread::sleep_for (std::chrono::milliseconds(2000));
     //FIM
     tela->stop();
     teclado->stop();
-    // player->stop();
+    player->stop();
     return 0;
   } else {
     //Sai do programa
