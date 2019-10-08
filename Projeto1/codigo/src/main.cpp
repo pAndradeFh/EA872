@@ -32,11 +32,17 @@ int main ()
 {
   srand(time(NULL));
 
-  Audio::Sample *somFight = new Audio::Sample();
-  somFight->load("assets/victory.dat");
+  Audio::Sample *mainTheme = new Audio::Sample();
+  Audio::Sample *victory = new Audio::Sample();
+  Audio::Sample *defeat  = new Audio::Sample();
+
+  mainTheme->load("assets/main_theme.dat");
+  victory->load("assets/victory.dat");
+  defeat->load("assets/defeat.dat");
+
   Audio::Player *player = new Audio::Player();
-  player->init();
-  player->play(somFight);
+  // player->init();
+  // player->play(mainTheme);
 
   //Gera um jogador em uma posição especifica
   Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
@@ -69,6 +75,7 @@ int main ()
   tela->menu();
   //escolhe a opção de jogo
   while(aux == 0) {
+      std::this_thread::sleep_for (std::chrono::milliseconds(50));
       char c = teclado->getchar();
       if(c == 't'){
         aux = 1;
@@ -84,15 +91,15 @@ int main ()
 
   if(aux == 1){
       tela->msg();
-      std::this_thread::sleep_for (std::chrono::milliseconds(2000));
-      int ganhou = 0;
-      while (1) {
+      std::this_thread::sleep_for (std::chrono::milliseconds(4000));
+      int ganhou = 3;
+      while (ganhou == 3) {
         t0 = t1;
         t1 = get_now_ms();
         deltaT = t1-t0;
         //verifica se houve captura de comida
-        gc->verifica_e_realiza_captura();
-        //lê e efetua os comandos do teclado
+        ganhou = gc->verifica_e_realiza_captura();
+        //lê os comandos do teclado e efetua a movimentação
         char c = teclado->getchar();
         if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0);
@@ -108,17 +115,23 @@ int main ()
           f->update(deltaT);
         }
         tela->update((int)(t1-T));
-        if ( (t1-T) > 10000 ) break;
+        if ( (t1-T) > 20000 ) {
+          ganhou = 0;
+        };
         std::this_thread::sleep_for (std::chrono::milliseconds(50));
         i++;
       }
+
+    // mostra mensagem de derrota ou vitória
     tela->vitoria_ou_derrota(ganhou);
     std::this_thread::sleep_for (std::chrono::milliseconds(2000));
+    //FIM
     tela->stop();
     teclado->stop();
-    player->stop();
+    // player->stop();
     return 0;
   } else {
+    //Sai do programa
     tela->stop();
     teclado->stop();
     player->stop();

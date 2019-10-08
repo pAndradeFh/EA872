@@ -36,9 +36,9 @@ class Enemy {
 		int y;
 	public:
 		Enemy(int x, int y);
+		void update(int x, int y);
 		~Enemy();
 		int get_x();
 		int get_y();
-		void random_move();
 };
 #endif

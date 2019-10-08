@@ -48,11 +48,15 @@ ListComida* Tela::get_lc(){
 }
 
 void Tela::update(int tempo) {
-	int x, y, meio, right_screen_bound;
+	int x, y, meio, right_screen_bound, x_e, y_e;
 	char *char_array;
 
 	x = (int)(this->jogador->get_x());
 	y = (int)(this->jogador->get_y());
+
+	x_e = (int)(this->enemy->get_x());
+	y_e = (int)(this->enemy->get_y());
+
 	float massa = (float)(this->jogador->get_massa());
 	meio = (int)(this->tela_player) / 2 + 1;
 	std::vector<Comida *> *lco = this->listaComidas->getComidas();
@@ -65,6 +69,10 @@ void Tela::update(int tempo) {
 		if(x_com - x <= meio-1 && y_com - y <= meio-1 ){
 			mvaddch(x_com - x + meio, y_com - y + meio,  '*');
 		}
+	}
+
+	if(x_e - x <= meio-1 && y_e - y <= meio - 1){
+		mvaddch(x_e - x + meio, y_e - y + meio,  '+');
 	}
 
 	char xsa[64], xsa2[64];
@@ -163,7 +171,7 @@ void Tela::msg(){
 
 void Tela::vitoria_ou_derrota(int vit_der){
 	clear();
-	if(vit_der == 0) {mvaddstr(6, 3, "YOU LOSE!");}
+	if(vit_der == 0) { mvaddstr(6, 3, "YOU LOSE!"); }
 	else  {mvaddstr(6, 3, "YOU WIN!");}
 }
 

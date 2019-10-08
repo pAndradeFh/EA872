@@ -15,6 +15,11 @@ int Enemy::get_y(){
   return this->y;
 }
 
+void Enemy::update(int x, int y){
+  this->x = x;
+  this->y = y;
+}
+
 Enemy::Enemy(int x, int y){
   this->x = x;
   this->y = y;

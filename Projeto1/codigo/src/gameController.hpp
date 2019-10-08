@@ -5,12 +5,14 @@
 #include "comida.hpp"
 
 class GameController {
+	private:
+		Enemy * get_enemy();
 	public:
 		ListComida *lista_de_comidas;
 		Player *jogador;
 		Enemy *enemy;
 		GameController(ListComida *lista_de_comidas, Player *ldc, Enemy *enemy);
-		void verifica_e_realiza_captura();
+		int verifica_e_realiza_captura();
 };
 
 #endif
