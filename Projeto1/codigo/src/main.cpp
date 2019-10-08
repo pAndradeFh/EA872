@@ -32,6 +32,12 @@ int main ()
 {
   srand(time(NULL));
 
+  Audio::Sample *somFight = new Audio::Sample();
+  somFight->load("assets/victory.dat");
+  Audio::Player *player = new Audio::Player();
+  player->init();
+  player->play(somFight);
+
   //Gera um jogador em uma posição especifica
   Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
   //Cria uma física nova
@@ -110,10 +116,12 @@ int main ()
     std::this_thread::sleep_for (std::chrono::milliseconds(2000));
     tela->stop();
     teclado->stop();
+    player->stop();
     return 0;
   } else {
     tela->stop();
     teclado->stop();
+    player->stop();
     return 0;
   }
 
