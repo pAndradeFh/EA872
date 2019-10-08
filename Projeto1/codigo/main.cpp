@@ -46,9 +46,6 @@ int main ()
   //
   int i = 0;
   //
-  T = get_now_ms();
-  t1 = T;
-
   int aux = 0;
   //gera um menu
   tela->menu();
@@ -64,7 +61,13 @@ int main ()
       }
   }
 
+  T = get_now_ms();
+  t1 = T;
+
   if(aux == 1){
+      tela->msg();
+      std::this_thread::sleep_for (std::chrono::milliseconds(2000));
+      int ganhou = 0;
       while (1) {
         t0 = t1;
         t1 = get_now_ms();
@@ -86,12 +89,13 @@ int main ()
         } else {
           f->update(deltaT);
         }
-        tela->update();
-        if ( (t1-T) > 40000 ) break;
+        tela->update((int)(t1-T));
+        if ( (t1-T) > 10000 ) break;
         std::this_thread::sleep_for (std::chrono::milliseconds(50));
         i++;
-    }
-
+      }
+    tela->vitoria_ou_derrota(ganhou);
+    std::this_thread::sleep_for (std::chrono::milliseconds(2000));
     tela->stop();
     teclado->stop();
     return 0;

@@ -10,9 +10,24 @@
 #include <ncurses.h>
 using namespace std::chrono;
 
+int Enemy::get_x(){
+  return this->x;
+}
+
+int Enemy::get_y(){
+  return this->y;
+}
+
+Enemy::Enemy(int x, int y){
+  this->x = x;
+  this->y = y;
+}
+
+
 GameController::GameController(ListComida *lista_de_comidas, Player *jog){
   this->jogador = jog;
   this->lista_de_comidas = lista_de_comidas;
+  
 }
 
 void GameController::verifica_e_realiza_captura(){

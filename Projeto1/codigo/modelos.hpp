@@ -46,7 +46,6 @@ class Fisica {
 		void aplica_forca(float deltaT, float forca_x, float forca_y);
 };
 
-
 class Comida {
 	private:
 		int x;
@@ -58,7 +57,6 @@ class Comida {
 		int get_y();
 };
 
-
 class ListComida {
 	private:
 		std::vector<Comida*> *comidas;
@@ -68,6 +66,18 @@ class ListComida {
     void add_corpo(Comida *c);
 		void geraListaAleatoria(int numero, int height, int width);
 		std::vector<Comida *> *getComidas();
+};
+
+class Enemy {
+	private:
+		int x;
+		int y;
+	public:
+		Enemy(int x, int y);
+		~Enemy();
+		int get_x();
+		int get_y();
+		void random_move();
 };
 
 class Tela {
@@ -84,8 +94,10 @@ class Tela {
 		ListComida* get_lc();
     void stop();
     void init();
-    void update();
-		int menu();
+    void update(int tempo);
+		void menu();
+		void msg();
+		void vitoria_ou_derrota(int vit_der);
 };
 
 void threadfun (char *keybuffer, int *control);
