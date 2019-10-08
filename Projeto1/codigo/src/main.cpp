@@ -61,7 +61,7 @@ int main ()
   int aux = 0;
   //gera um menu
   tela->menu();
-
+  //escolhe a opção de jogo
   while(aux == 0) {
       char c = teclado->getchar();
       if(c == 't'){
