@@ -24,10 +24,10 @@ Enemy::Enemy(int x, int y){
 }
 
 
-GameController::GameController(ListComida *lista_de_comidas, Player *jog){
+GameController::GameController(ListComida *lista_de_comidas, Player *jog, Enemy * enemy){
   this->jogador = jog;
   this->lista_de_comidas = lista_de_comidas;
-  
+  this->enemy = enemy;
 }
 
 void GameController::verifica_e_realiza_captura(){

@@ -16,12 +16,17 @@ using namespace std::chrono;
 /*
 	Construtor Tela - cria uma nova tela
 */
-Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc) {
+Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc, Enemy *enemy) {
 	this->jogador = ldc;
 	this->largura = largura;
 	this->tela_player = tela_player;
 	this->comprimento = comprimento;
 	this->listaComidas = lc;
+	this->enemy = enemy;
+}
+
+Enemy *Tela::get_enemy(){
+	return this->enemy;
 }
 
 void Tela::init() {
@@ -56,6 +61,7 @@ void Tela::update(int tempo) {
 	std::vector<Comida *> *lco = this->listaComidas->getComidas();
 
 	clear();
+
 	for (int i = 0; i<lco->size(); i++) {
 		int x_com = (int)((*lco)[i]->get_x());
 		int y_com = (int)((*lco)[i]->get_y());
@@ -89,6 +95,7 @@ void Tela::update(int tempo) {
 			echochar('|');
 		}
 	}
+
 	if(right_bound >= WIDTH){
 		for (int i = 0; i < this->tela_player; i++) {
 			move(i, WIDTH + meio - y + 1);

@@ -28,12 +28,14 @@ int main ()
   Fisica *f = new Fisica(jog, 20);
   //Cria uma lista de objetos para serem comidas
   ListComida *lc = new ListComida();
+  //Cria um inimigo
+  Enemy *enemy = new Enemy((int)(jog->get_x() - 3),(int)(jog->get_y() - 3));
   //Cria um controlador de jogo
-  GameController *gc = new GameController(lc,jog);
+  GameController *gc = new GameController(lc, jog, enemy);
   //popula a lista em posicoes diferentes
   lc->geraListaAleatoria(20,HEIGTH,WIDTH);
   //Cria uma nova tela e a inicializa
-  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc);
+  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
   tela->init();
   //Cria um novo teclado e o inicializa
   Teclado *teclado = new Teclado();

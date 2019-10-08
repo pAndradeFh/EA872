@@ -83,15 +83,17 @@ class Enemy {
 class Tela {
   private:
     Player *jogador;
+		Enemy *enemy;
     int largura;
 		int comprimento;
 		int tela_player;
 		ListComida *listaComidas;
 
   public:
-    Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc);
+    Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc, Enemy *enemy);
     ~Tela();
 		ListComida* get_lc();
+		Enemy* get_enemy();
     void stop();
     void init();
     void update(int tempo);
@@ -106,7 +108,6 @@ class Teclado {
   private:
     char ultima_captura;
     int rodando;
-
     std::thread kb_thread;
 
   public:
@@ -119,9 +120,10 @@ class Teclado {
 
 class GameController {
 	public:
-		GameController(ListComida *lista_de_comidas, Player *ldc);
 		ListComida *lista_de_comidas;
 		Player *jogador;
+		Enemy *enemy;
+		GameController(ListComida *lista_de_comidas, Player *ldc, Enemy *enemy);
 		void verifica_e_realiza_captura();
 };
 
