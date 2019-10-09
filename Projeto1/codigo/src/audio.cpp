@@ -142,7 +142,7 @@ void Player::init() {
   //   return;
   // }
   //
-  // err = Pa_StartStream( stream );
+   err = Pa_StartStream( stream );
   // if( err != paNoError ) {
   //   std::cerr << "Error on Pa_StartStream()" << std::endl;
   //   return;
