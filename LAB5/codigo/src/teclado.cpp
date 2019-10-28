@@ -2,8 +2,10 @@
 	Paulo Roberto Andrade Filho - Laboratório 6 - RA 156951
 */
 #include "teclado.hpp"
-void threadfun(char *keybuffer, int *control, int *connection_fd, int *socket_fd,  socklen_t client_size, struct sockaddr_in *client) {
+void threadfun(char *keybuffer, int *control, int *connection_fd, int *socket_fd, struct sockaddr_in *client) {
+	socklen_t client_size = (socklen_t)sizeof(client);
 	char c = 0;
+
 	*connection_fd = accept(*socket_fd, (struct sockaddr*)client, &client_size);
 	while ((*control) == 1) {
 		recv(*connection_fd, &c, 1, 0);
@@ -28,14 +30,12 @@ void Teclado::init() {
   server.sin_port = htons(3001);
   inet_aton("127.0.0.1", &(server.sin_addr));
 	if (bind(socket_fd, (struct sockaddr*)&server, sizeof(server)) != 0) {
-
 		fprintf(stderr , "Problemas ao abrir porta\n");
 		return;
-		
 	}
   listen(socket_fd, 2);
 	this->rodando = 1;
-	std::thread newthread(threadfun, &(this->ultima_captura), &(this->rodando), &(this->connection_fd), &(this->socket_fd), (socklen_t)sizeof(this->client), &(this->client));
+	std::thread newthread(threadfun, &(this->ultima_captura), &(this->rodando), &(this->connection_fd), &(this->socket_fd), &(this->client));
 	(this->kb_thread).swap(newthread);
 }
 

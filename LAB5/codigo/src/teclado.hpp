@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <thread>
 
-void threadfun (char *keybuffer, int *control, int *connection_fd, int *socket_fd, socklen_t client_size, struct sockaddr_in *client);
+void threadfun (char *keybuffer, int *control, int *connection_fd, int *socket_fd, struct sockaddr_in *client);
 
 class Teclado {
   private:

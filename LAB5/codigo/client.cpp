@@ -7,6 +7,7 @@
 
 int main() {
   int socket_fd;
+  char h[1];
   struct sockaddr_in target;
 
   socket_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -23,14 +24,12 @@ int main() {
   printf("Conectei ao servidor\n");
 
   /* Agora, meu socket funciona como um descritor de arquivo usual */
-  send(socket_fd, "T", 5, 0);
-  printf("Escrevi mensagem de ping!\n");
-  sleep(1);
+  while(1) {
+    scanf ("%s", h);
+    send(socket_fd, h, 5, 0);
+    printf("Enviei o char\n");
+  }
 
-  /* Recebendo resposta */
-  char reply[10];
-  recv(socket_fd, reply, 10, 0);
-  printf("Resposta:\n%s\n", reply);
   close(socket_fd);
   return 0;
 }

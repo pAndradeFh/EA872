@@ -66,25 +66,25 @@ int GameController::verifica_e_realiza_captura(){
   }
 
   //  Realiza movimentos aleatorios do inimigo na direção do player
-  int xrand = rand() % 1000 + 1;
-  if (xrand <= 8){
-    int new_x, new_y;
-    if(e_x < jogador->get_x()){
-      new_x = e_x + 1;
-    } else if(e_x > jogador->get_x()){
-      new_x = e_x - 1;
-    } else {
-      new_x = e_x;
-    }
-    if(e_y < jogador->get_y()){
-      new_y = e_y + 1;
-    } else if(e_y > jogador->get_y()){
-      new_y = e_y - 1;
-    } else {
-      new_y = e_y;
-    }
-    inimigo->update(new_x,new_y);
-  }
+  // int xrand = rand() % 1000 + 1;
+  // if (xrand <= 8){
+  //   int new_x, new_y;
+  //   if(e_x < jogador->get_x()){
+  //     new_x = e_x + 1;
+  //   } else if(e_x > jogador->get_x()){
+  //     new_x = e_x - 1;
+  //   } else {
+  //     new_x = e_x;
+  //   }
+  //   if(e_y < jogador->get_y()){
+  //     new_y = e_y + 1;
+  //   } else if(e_y > jogador->get_y()){
+  //     new_y = e_y - 1;
+  //   } else {
+  //     new_y = e_y;
+  //   }
+  //   inimigo->update(new_x,new_y);
+  // }
 
   //  veririfica se o jogador comeu alguma comida
   for(int i = 0; i < (lc)->size(); i ++){

@@ -1,8 +1,8 @@
 #include <chrono>
 #include "player.hpp"
 #include "comida.hpp"
-#include "tela.hpp"
 #include "teclado.hpp"
+#include "tela.hpp"
 #include <ncurses.h>
 #include <stdio.h>
 

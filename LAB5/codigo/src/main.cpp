@@ -15,9 +15,9 @@
 #include "comida.hpp"
 #include "player.hpp"
 #include "gameController.hpp"
-#include "tela.hpp"
 #include "teclado.hpp"
 #include "fisica.hpp"
+#include "tela.hpp"
 
 #define WIDTH 20
 #define HEIGTH 30
@@ -33,13 +33,13 @@ int main ()
 {
   srand(time(NULL));
 
-  Audio::Sample *mainTheme = new Audio::Sample();
-  Audio::Sample *victory = new Audio::Sample();
-  Audio::Sample *defeat  = new Audio::Sample();
+  //Audio::Sample *mainTheme = new Audio::Sample();
+  //Audio::Sample *victory = new Audio::Sample();
+  //Audio::Sample *defeat  = new Audio::Sample();
 
-  mainTheme->load("assets/main_theme.dat");
-  victory->load("assets/victory.dat");
-  defeat->load("assets/defeat.dat");
+  //mainTheme->load("assets/main_theme.dat");
+  //victory->load("assets/victory.dat");
+  //defeat->load("assets/defeat.dat");
 
   //Audio::Player *player = new Audio::Player();
   //player->init();
@@ -57,13 +57,15 @@ int main ()
   GameController *gc = new GameController(lc, jog, enemy);
   //popula a lista em posicoes diferentes
   lc->geraListaAleatoria(20,HEIGTH,WIDTH);
+  //inicializa o teclado
+  Teclado *teclado = new Teclado();
+  teclado->init();
+  teclado->getchar();
   //Cria uma nova tela e a inicializa
   Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
   tela->init();
   //Cria um novo teclado e o inicializa
-  Teclado *teclado = new Teclado();
-  teclado->init();
-  teclado->getchar();
+
 
   uint64_t t0;
   uint64_t t1;
@@ -77,9 +79,10 @@ int main ()
   tela->menu();
   //escolhe a opção de jogo
   while(aux == 0) {
-      std::this_thread::sleep_for (std::chrono::milliseconds(50));
+      //std::this_thread::sleep_for (std::chrono::milliseconds(50));
       char c = teclado->getchar();
       if(c == 't'){
+        fprintf(stderr , "recebi t\n");
         aux = 1;
       } else if (c == 'e'){
         aux = 2;
