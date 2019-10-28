@@ -15,7 +15,8 @@
 #include "comida.hpp"
 #include "player.hpp"
 #include "gameController.hpp"
-#include "io.hpp"
+#include "tela.hpp"
+#include "teclado.hpp"
 #include "fisica.hpp"
 
 #define WIDTH 20
@@ -62,6 +63,7 @@ int main ()
   //Cria um novo teclado e o inicializa
   Teclado *teclado = new Teclado();
   teclado->init();
+  teclado->getchar();
 
   uint64_t t0;
   uint64_t t1;

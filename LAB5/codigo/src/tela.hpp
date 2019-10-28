@@ -1,10 +1,10 @@
 /*
-	Paulo Roberto Andrade Filho - Projeto 1 - RA1 56951
+	Paulo Roberto Andrade Filho - Laboratório 6 - RA 156951
 */
 #ifndef OO_MODEL_HPP
 #define OO_MODEL_HPP
 
-#include <thread>
+#include <ncurses.h>
 
 class Tela {
   private:
@@ -26,22 +26,6 @@ class Tela {
 		void menu();
 		void msg();
 		void vitoria_ou_derrota(int vit_der);
-};
-
-void threadfun (char *keybuffer, int *control);
-
-class Teclado {
-  private:
-    char ultima_captura;
-    int rodando;
-    std::thread kb_thread;
-
-  public:
-    Teclado();
-    ~Teclado();
-    void stop();
-    void init();
-    char getchar();
 };
 
 
