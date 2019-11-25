@@ -1,11 +1,40 @@
 #include <chrono>
 #include "player.hpp"
 #include <ncurses.h>
+#include <string>
+#include <cstring>
+#include <vector>
 using namespace std::chrono;
 
 #define WIDTH 20
 #define HEIGTH 30
 #define SCREEN 11
+
+ListPlayers::ListPlayers() {
+	this->jogadores = new std::vector<Player *>(0);
+}
+
+std::vector<Player*> *ListPlayers::getJogadores() {
+	return this->jogadores;
+}
+
+void ListPlayers::addPlayer(int width, int height) {
+	std::vector<Player*> *lp = this->getJogadores();
+  int aux = 0;
+  int xrand, yrand;
+  while(aux == 0) {
+    aux = 1;
+    xrand = rand() % (height - 1) + 1;
+    yrand = rand() % (width - 1) + 1;
+    for (int k=0;k<(lp)->size();k++){
+      if(xrand==(*lp)[k]->get_x() && yrand==(*lp)[k]->get_y()){
+        aux = 0;
+      }
+    }
+  }
+  Player *jog = new Player(10, xrand, yrand, 0, 0, 0, 0, 0);
+  lp->push_back(jog);
+}
 
 /*
 	Construtor Player: Cria um Player novo

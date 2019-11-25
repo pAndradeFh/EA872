@@ -1,3 +1,4 @@
+#include <vector>
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 /*
@@ -27,6 +28,16 @@ class Player {
 	float get_ax();
 	float get_ay();
 	float get_am();
+};
+
+class ListPlayers{
+	private:
+		std::vector<Player*> *jogadores;
+	public:
+		ListPlayers();
+		std::vector<Player*> *getJogadores();
+		void addPlayer(int width, int height);
+		void deletePlayer(int pos);
 };
 
 #endif

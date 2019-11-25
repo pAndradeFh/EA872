@@ -9,12 +9,11 @@
 
 class GameController {
 	private:
-		std::vector<Player*> *jogadores;
+		ListPlayers *lista_de_jogadores;
 	public:
 		ListComida *lista_de_comidas;
-		GameController(ListComida *lista_de_comidas);
+		GameController(ListComida *lista_de_comidas, ListPlayers *lista_de_jogadores);
 		std::vector<Player*> *getJogadores();
-		void addRandomJogador(int height, int width);
 		int verifica_e_realiza_captura();
 		std::string serialize();
 };

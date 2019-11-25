@@ -7,35 +7,16 @@ using namespace std::chrono;
 
 #include <string>
 #include <cstring>
-// JSON library
 #include "json.hpp"
 using json = nlohmann::json;
 
-GameController::GameController(ListComida *lista_de_comidas){
+GameController::GameController(ListComida *lista_de_comidas, ListPlayers *lista_de_jogadores){
   this->lista_de_comidas = lista_de_comidas;
-  this->jogadores = new std::vector<Player *>(0);;
+  this->lista_de_jogadores = lista_de_jogadores;
 }
 
 std::vector<Player*> *GameController::getJogadores(){
-  return (this->jogadores);
-}
-
-void GameController::addRandomJogador(int height, int width){
-  std::vector<Player*> *lp = this->getJogadores();
-  int aux = 0;
-  int xrand, yrand;
-  while(aux == 0) {
-    aux = 1;
-    xrand = rand() % (height - 1) + 1;
-    yrand = rand() % (width - 1) + 1;
-    for (int k=0;k<(lp)->size();k++){
-      if(xrand==(*lp)[k]->get_x() && yrand==(*lp)[k]->get_y()){
-        aux = 0;
-      }
-    }
-  }
-  Player *jog = new Player(10, xrand, yrand, 0, 0, 0, 0, 0);
-  lp->push_back(jog);
+  return (this->lista_de_jogadores)->getJogadores();
 }
 
 std::string GameController::serialize() {
@@ -45,6 +26,7 @@ std::string GameController::serialize() {
   std::vector<int> comidas_y;
   std::vector<int> comidas_x;
   std::vector<int> players_y;
+  std::vector<int> points;
   std::vector<int> players_x;
   for(int i = 0; i < (lc)->size(); i ++){
     comidas_y.push_back((*lc)[i]->get_y());
@@ -53,11 +35,13 @@ std::string GameController::serialize() {
   for(int i = 0; i < (lp)->size(); i ++){
     players_x.push_back((*lp)[i]->get_x());
     players_y.push_back((*lp)[i]->get_y());
+    points.push_back((*lp)[i]->get_massa());
   }
   j["comidas_y"] = comidas_y;
   j["players_y"] = players_y;
   j["players_x"] = players_x;
   j["comidas_x"] = comidas_x;
+  j["points"] = points;
   return j.dump();
 }
 
@@ -74,13 +58,8 @@ int GameController::verifica_e_realiza_captura(){
 
     std::vector<Comida *> *lc = this->lista_de_comidas->getComidas();
 
-
     int jx = (int)(jogador->get_x());
     int jy = (int)(jogador->get_y());
-
-    if(massa>=100){
-      return 1;
-    }
 
     //  veririfica se o jogador comeu alguma comida
     for(int i = 0; i < (lc)->size(); i ++){
