@@ -1,5 +1,5 @@
 /*
-	Paulo Roberto Andrade Filho - Laboratório 6 - RA 156951
+	Paulo Roberto Andrade Filho - Projeto Final - RA 156951
 */
 #include "teclado.hpp"
 void threadfun(char *keybuffer, int *control, int *connection_fd, int *socket_fd, struct sockaddr_in *client) {

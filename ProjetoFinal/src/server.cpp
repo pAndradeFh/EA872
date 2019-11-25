@@ -23,6 +23,7 @@
 #define HEIGTH 30
 #define SCREEN 11
 #define FORCA 110
+#define CONN 4
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -61,19 +62,19 @@ int main ()
   Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
   tela->init();
   tela->msg();
-  // //inicializa o teclado
-  //Teclado *teclado = new Teclado();
-  //teclado->init();
+  //inicializa o teclado
+  Teclado *teclado = new Teclado();
+  teclado->init();
+
+  uint64_t t0;
+  uint64_t t1;
+  uint64_t deltaT;
+  uint64_t T;
   //
-  // uint64_t t0;
-  // uint64_t t1;
-  // uint64_t deltaT;
-  // uint64_t T;
-  // //
-  // int i = 0;
-  // //
-  // int aux = 0;
-  // //gera um menu
+  int i = 0;
+  //
+  int aux = 0;
+  //gera um menu
   tela->menu();
   // //escolhe a opção de jogo
   // while(aux == 0) {
@@ -92,7 +93,7 @@ int main ()
   //
   // if(aux == 1){
   //     tela->msg();
-       std::this_thread::sleep_for (std::chrono::milliseconds(4000));
+       // std::this_thread::sleep_for (std::chrono::milliseconds(4000));
   //     int ganhou = 3;
   //     while (ganhou == 3) {
   //       t0 = t1;
@@ -140,7 +141,7 @@ int main ()
   //   return 0;
   // } else {
   //   //Sai do programa
-    tela->stop();
+    // tela->stop();
   //teclado->stop();
   //   //player->stop();
   //   return 0;
