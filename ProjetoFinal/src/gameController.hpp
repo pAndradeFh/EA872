@@ -12,11 +12,11 @@ class GameController {
 		std::vector<Player*> *jogadores;
 	public:
 		ListComida *lista_de_comidas;
-		GameController(ListComida *lista_de_comidas, Player *ldc);
+		GameController(ListComida *lista_de_comidas);
+		std::vector<Player*> *getJogadores();
+		void addRandomJogador(int height, int width);
 		int verifica_e_realiza_captura();
 		std::string serialize();
-    void unserialize(std::string buffer_in);
-    void dump();
 };
 
 #endif

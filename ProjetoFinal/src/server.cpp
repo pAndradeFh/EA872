@@ -18,9 +18,8 @@
 #include "fisica.hpp"
 #include "tela.hpp"
 
-#define WIDTH 20
-#define HEIGTH 30
-#define SCREEN 11
+#define WIDTH 100
+#define HEIGTH 50
 #define FORCA 110
 #define CONN 4
 
@@ -34,8 +33,9 @@ int main ()
   srand(time(NULL));
   ListComida *lc = new ListComida();
   lc->geraListaAleatoria(20,HEIGTH,WIDTH);
-  Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
-  GameController *gc = new GameController(lc, jog);
+  GameController *gc = new GameController(lc);
+  gc->addRandomJogador(HEIGTH,WIDTH);
+  gc->addRandomJogador(HEIGTH,WIDTH);
   std::string t = gc->serialize();
   std::cout << t;
   std::this_thread::sleep_for (std::chrono::milliseconds(4000));
