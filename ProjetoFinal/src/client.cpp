@@ -55,8 +55,8 @@ int main ()
   }
   send(socket_fd, "&c", 1, 0);
 
-  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
-  tela->init();
+  // Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
+  // tela->init();
 
   //Audio::Sample *mainTheme = new Audio::Sample();
   //Audio::Sample *victory = new Audio::Sample();

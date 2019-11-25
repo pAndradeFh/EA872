@@ -15,7 +15,6 @@
 #include "comida.hpp"
 #include "player.hpp"
 #include "gameController.hpp"
-#include "teclado.hpp"
 #include "fisica.hpp"
 #include "tela.hpp"
 
@@ -33,49 +32,44 @@ uint64_t get_now_ms() {
 int main ()
 {
   srand(time(NULL));
-
-  //Audio::Sample *mainTheme = new Audio::Sample();
-  //Audio::Sample *victory = new Audio::Sample();
-  //Audio::Sample *defeat  = new Audio::Sample();
-
-  //mainTheme->load("assets/main_theme.dat");
-  //victory->load("assets/victory.dat");
-  //defeat->load("assets/defeat.dat");
-
-  //Audio::Player *player = new Audio::Player();
-  //player->init();
-  //player->play(mainTheme);
-
-  //Gera um jogador em uma posição especifica
-  Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
-  //Cria uma física nova
-  Fisica *f = new Fisica(jog, 20);
-  //Cria uma lista de objetos para serem comidas
   ListComida *lc = new ListComida();
-  //Cria um inimigo
-  Enemy *enemy = new Enemy((int)(jog->get_x() - 3),(int)(jog->get_y() - 3));
-  //Cria um controlador de jogo
-  GameController *gc = new GameController(lc, jog, enemy);
-  //popula a lista em posicoes diferentes
   lc->geraListaAleatoria(20,HEIGTH,WIDTH);
-  //Cria uma nova tela e a inicializa
-  Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
-  tela->init();
-  tela->msg();
-  //inicializa o teclado
-  Teclado *teclado = new Teclado();
-  teclado->init();
+  Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
+  GameController *gc = new GameController(lc, jog);
+  std::string t = gc->serialize();
+  std::cout << t;
+  std::this_thread::sleep_for (std::chrono::milliseconds(4000));
 
-  uint64_t t0;
-  uint64_t t1;
-  uint64_t deltaT;
-  uint64_t T;
+  // //Gera um jogador em uma posição especifica
+  // Player *jog = new Player(10.0, 15, 10, 0.0, 0.0, 0.0, 0.0, 1);
+  // //Cria uma física nova
+  // Fisica *f = new Fisica(jog, 20);
+  // //Cria uma lista de objetos para serem comidas
+  // ListComida *lc = new ListComida();
+  // //Cria um inimigo
+  // Enemy *enemy = new Enemy((int)(jog->get_x() - 3),(int)(jog->get_y() - 3));
+  // //Cria um controlador de jogo
+  // GameController *gc = new GameController(lc, jog, enemy);
+  //popula a lista em posicoes diferentes
+  // lc->geraListaAleatoria(20,HEIGTH,WIDTH);
+  //Cria uma nova tela e a inicializa
+  // Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
+  // tela->init();
+  // tela->msg();
+  //inicializa o teclado
+  // Teclado *teclado = new Teclado();
+  // teclado->init();
+
+  // uint64_t t0;
+  // uint64_t t1;
+  // uint64_t deltaT;
+  // uint64_t T;
   //
-  int i = 0;
+  // int i = 0;
   //
-  int aux = 0;
+  // int aux = 0;
   //gera um menu
-  tela->menu();
+  // tela->menu();
   // //escolhe a opção de jogo
   // while(aux == 0) {
   //     char c = teclado->getchar();

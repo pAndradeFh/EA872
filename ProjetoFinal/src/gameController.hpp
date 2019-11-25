@@ -3,16 +3,20 @@
 
 #include "player.hpp"
 #include "comida.hpp"
+#include <fstream>
+#include <iostream>
+#include <string>
 
 class GameController {
 	private:
-		Enemy * get_enemy();
+		std::vector<Player*> *jogadores;
 	public:
 		ListComida *lista_de_comidas;
-		Player *jogador;
-		Enemy *enemy;
-		GameController(ListComida *lista_de_comidas, Player *ldc, Enemy *enemy);
+		GameController(ListComida *lista_de_comidas, Player *ldc);
 		int verifica_e_realiza_captura();
+		std::string serialize();
+    void unserialize(std::string buffer_in);
+    void dump();
 };
 
 #endif

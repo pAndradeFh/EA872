@@ -1,10 +1,9 @@
 #include <chrono>
-#include "player.hpp"
-#include "comida.hpp"
-#include "teclado.hpp"
-#include "tela.hpp"
 #include <ncurses.h>
 #include <stdio.h>
+#include "player.hpp"
+#include "comida.hpp"
+#include "tela.hpp"
 
 using namespace std::chrono;
 
@@ -15,17 +14,12 @@ using namespace std::chrono;
 /*
 	Construtor Tela - cria uma nova tela
 */
-Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc, Enemy *enemy) {
+Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc) {
 	this->jogador = ldc;
 	this->largura = largura;
 	this->tela_player = tela_player;
 	this->comprimento = comprimento;
 	this->listaComidas = lc;
-	this->enemy = enemy;
-}
-
-Enemy *Tela::get_enemy(){
-	return this->enemy;
 }
 
 //inicia a tela
@@ -58,9 +52,6 @@ void Tela::update(int tempo) {
 	x = (int)(this->jogador->get_x());
 	y = (int)(this->jogador->get_y());
 
-	x_e = (int)(this->enemy->get_x());
-	y_e = (int)(this->enemy->get_y());
-
 	float massa = (float)(this->jogador->get_massa());
 	meio = (int)(this->tela_player) / 2 + 1;
 	std::vector<Comida *> *lco = this->listaComidas->getComidas();
@@ -75,15 +66,11 @@ void Tela::update(int tempo) {
 		}
 	}
 
-	if(x_e - x <= meio-1 && y_e - y <= meio - 1){
-		mvaddch(x_e - x + meio, y_e - y + meio,  '+');
-	}
-
-	char xsa[64], xsa2[64];
-	std::snprintf(xsa, sizeof xsa, "%f", this->jogador->get_massa());
-	mvaddstr(12, 0, xsa);
-	std::snprintf(xsa2, sizeof xsa2, "%i", tempo/1000);
-	mvaddstr(13, 0, xsa2);
+	// char xsa[64], xsa2[64];
+	// std::snprintf(xsa, sizeof xsa, "%f", this->jogador->get_massa());
+	// mvaddstr(12, 0, xsa);
+	// std::snprintf(xsa2, sizeof xsa2, "%i", tempo/1000);
+	// mvaddstr(13, 0, xsa2);
 
 	int right_bound = y + meio;
 	int left_bound = y - meio;

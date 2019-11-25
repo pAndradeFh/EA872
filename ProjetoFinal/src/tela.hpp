@@ -9,17 +9,15 @@
 class Tela {
   private:
     Player *jogador;
-		Enemy *enemy;
     int largura;
 		int comprimento;
 		int tela_player;
 		ListComida *listaComidas;
 
   public:
-    Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc, Enemy *enemy);
+    Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc);
     ~Tela();
 		ListComida* get_lc();
-		Enemy* get_enemy();
     void stop();
     void init();
     void update(int tempo);
