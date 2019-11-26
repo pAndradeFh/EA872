@@ -12,7 +12,7 @@ class Fisica {
   public:
     Fisica(float max_vel, ListPlayers *jogadores);
 		void update(float deltaT);
-		void aplica_forca(float deltaT, float forca_x, float forca_y);
+		void aplica_forca(float deltaT, float forca_x, float forca_y, int pos);
 };
 
 #endif

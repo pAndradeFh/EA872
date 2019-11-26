@@ -25,11 +25,8 @@ int socket_fd;
 #include "tela.hpp"
 #include "teclado_client.hpp"
 
-#define WIDTH 20
-#define HEIGTH 30
-#define SCREEN 11
-#define FORCA 110
-#define CONN 4
+#define WIDTH 100
+#define HEIGTH 50
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -38,23 +35,21 @@ uint64_t get_now_ms() {
 
 int main ()
 {
-  srand(time(NULL));
   struct sockaddr_in target;
 
   socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 
-  Teclado_Client *teclado = new Teclado_Client();
-  teclado->init();
-
   target.sin_family = AF_INET;
-  target.sin_port = htons(3001);
+  target.sin_port = htons(3002);
   inet_aton("127.0.0.1", &(target.sin_addr));
   if (connect(socket_fd, (struct sockaddr*)&target, sizeof(target)) != 0) {
-    teclado->stop();
-    return 0;
+    std::cerr << "It was not possible to connect to the server. \n Exiting. \n";
+    exit(0);
   }
   send(socket_fd, "&c", 1, 0);
-
+  Teclado_Client *teclado = new Teclado_Client();
+  teclado->init();
+  //
   // Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
   // tela->init();
 

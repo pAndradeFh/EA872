@@ -23,12 +23,23 @@
 #define FORCA 110
 #define CONN 4
 
+//Server variables
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+struct sockaddr_in myself, client;
+socklen_t client_size;
+int socket_fd;
+int connection_fd[CONN];
+int jogador_vivo[CONN];
+
 using namespace std::chrono;
 uint64_t get_now_ms() {
   return duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count();
 }
 
-int active_conn = 2;
+int active_conn = 4;
 
 int main ()
 {
@@ -40,9 +51,29 @@ int main ()
   uint64_t t1;
   uint64_t deltaT;
   uint64_t T;
-  lp->addPlayer(WIDTH,HEIGTH);
-  lp->addPlayer(WIDTH,HEIGTH);
+
+  socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+  myself.sin_family = AF_INET;
+  myself.sin_port = htons(3002);
+  inet_aton("127.0.0.1", &(myself.sin_addr));
+  if (bind(socket_fd, (struct sockaddr*)&myself, sizeof(myself)) != 0) {
+    return 0;
+  }
+  listen(socket_fd, 2);
   GameController *gc = new GameController(lc,lp);
+
+  //connect the clients
+  client_size = (socklen_t)sizeof(client);
+  std::cout << " Waiting the connections. \n";
+  for (int i = 0; i < CONN; i++) {
+    int conn_fd;
+    conn_fd = accept(socket_fd, (struct sockaddr*)&client, &client_size);
+    connection_fd[i] = conn_fd;
+    lp->addPlayer(WIDTH,HEIGTH);
+    std::cout << " Someone connected \n " << CONN - i - 1 << " players remaining. \n";
+    jogador_vivo[i] = 1;
+  }
+
   Fisica *f = new Fisica(20,lp);
   while (1) {
     std::this_thread::sleep_for (std::chrono::milliseconds(2000));
@@ -52,17 +83,19 @@ int main ()
     std::string t = gc->serialize();
     std::cout << t << '\n';
     std::vector<Player*> *lp = gc->getJogadores();
-    for(int l = 1; l<=(lp)->size(); l++){
+    for(int l = 0; l<(lp)->size(); l++){
+      char c;
+      if(l==0){c = 'w';} else {c = 's';}
       if (c=='w') {
-          f->aplica_forca(deltaT, -FORCA, 0.0);
+          f->aplica_forca(deltaT, -FORCA, 0.0, l);
       } else if ( c == 'q') {
           break;
       } else if (c=='s'){
-          f->aplica_forca(deltaT, FORCA, 0.0);
+          f->aplica_forca(deltaT, FORCA, 0.0, l);
       } else if (c=='a'){
-          f->aplica_forca(deltaT, 0.0, -FORCA);
+          f->aplica_forca(deltaT, 0.0, -FORCA, l);
       } else if (c=='d'){
-          f->aplica_forca(deltaT, 0.0, FORCA);
+          f->aplica_forca(deltaT, 0.0, FORCA, l);
       } else {
           f->update(deltaT);
       }
