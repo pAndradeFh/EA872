@@ -21,7 +21,7 @@
 #define WIDTH 100
 #define HEIGTH 50
 #define FORCA 110
-#define CONN 4
+#define CONN 2
 
 //Server variables
 #include <sys/types.h>
@@ -39,7 +39,7 @@ uint64_t get_now_ms() {
   return duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count();
 }
 
-int active_conn = 4;
+int active_conn = CONN;
 
 int main ()
 {
@@ -52,11 +52,13 @@ int main ()
   uint64_t deltaT;
   uint64_t T;
 
+
   socket_fd = socket(AF_INET, SOCK_STREAM, 0);
   myself.sin_family = AF_INET;
-  myself.sin_port = htons(3002);
+  myself.sin_port = htons(3001);
   inet_aton("127.0.0.1", &(myself.sin_addr));
   if (bind(socket_fd, (struct sockaddr*)&myself, sizeof(myself)) != 0) {
+    std::cout << " It was not possible to start the server \n ";
     return 0;
   }
   listen(socket_fd, 2);
@@ -71,7 +73,14 @@ int main ()
     connection_fd[i] = conn_fd;
     lp->addPlayer(WIDTH,HEIGTH);
     std::cout << " Someone connected \n " << CONN - i - 1 << " players remaining. \n";
+    char char_auxiliar[64];
+    std::snprintf(char_auxiliar, sizeof char_auxiliar, "%i", i);
+    send(connection_fd[i], char_auxiliar, 1, 0);
     jogador_vivo[i] = 1;
+  }
+
+  for (int i = 0; i < CONN; i++) {
+    send(connection_fd[i], "2", 1, 0);
   }
 
   Fisica *f = new Fisica(20,lp);
@@ -84,12 +93,17 @@ int main ()
     std::cout << t << '\n';
     std::vector<Player*> *lp = gc->getJogadores();
     for(int l = 0; l<(lp)->size(); l++){
+
+      // char p[t.length()];
+      // int i;
+      // for (i = 0; i < sizeof(p); i++) {
+      //   p[i] = t[i];
+      // }
+      // send(connection_fd[l], p, sizeof(p), 0);
       char c;
       if(l==0){c = 'w';} else {c = 's';}
       if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0, l);
-      } else if ( c == 'q') {
-          break;
       } else if (c=='s'){
           f->aplica_forca(deltaT, FORCA, 0.0, l);
       } else if (c=='a'){
