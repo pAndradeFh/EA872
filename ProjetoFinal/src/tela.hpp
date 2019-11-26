@@ -5,6 +5,8 @@
 #define OO_MODEL_HPP
 
 #include <ncurses.h>
+#include "json.hpp"
+using json = nlohmann::json;
 
 class Tela {
   private:
@@ -16,6 +18,7 @@ class Tela {
 
   public:
     Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc);
+    Tela(std::string info);
     ~Tela();
 		ListComida* get_lc();
     void stop();

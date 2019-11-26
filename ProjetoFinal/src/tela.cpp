@@ -4,6 +4,12 @@
 #include "player.hpp"
 #include "comida.hpp"
 #include "tela.hpp"
+#include "json.hpp"
+
+#include <stdlib.h>
+#include <string>
+#include <iostream>
+using json = nlohmann::json;
 
 using namespace std::chrono;
 
@@ -20,6 +26,13 @@ Tela::Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComid
 	this->tela_player = tela_player;
 	this->comprimento = comprimento;
 	this->listaComidas = lc;
+}
+
+Tela::Tela(std::string info){
+	std::cout << info;
+	json j;
+  j = json::parse(info);
+
 }
 
 //inicia a tela

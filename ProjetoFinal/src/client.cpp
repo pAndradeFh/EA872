@@ -58,26 +58,34 @@ int main ()
     std::cout << "Connected. \n";
     std::cout << "You're player number " << input_buffer<<".\n";
   }
- 
+
   //criamos um novo teclado
   // Teclado_Client *teclado = new Teclado_Client();
   // teclado->init();
 
   std::cout << "Now waiting for other players. \n";
   int tamanho[1];
-  while(aux == 0) {
-    std::this_thread::sleep_for (std::chrono::milliseconds(500));
-    char tamanho[1];
-    int msg_len = recv(socket_fd, tamanho, 1, MSG_DONTWAIT);
-    if(msg_len>0){
-      std::cout << tamanho;
-    }
+  const unsigned int MAX_BUF_LENGTH = 4096;
+  std::vector<char> buffer(MAX_BUF_LENGTH);
+  std::string rcv;
+  int bytesReceived = 0;
+  while(1) {
+    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+    do {
+      bytesReceived = recv(socket_fd, &buffer[0], buffer.size(), 0);
+      // append string from buffer.
+      if ( bytesReceived == -1 ) {
+      } else {
+         rcv.append( buffer.cbegin(), buffer.cend() );
+      }
+    } while ( bytesReceived == MAX_BUF_LENGTH );
+    
   }
 
   // teclado->stop();
   // send(socket_fd, "&c", 1, 0);
 
-  // Tela *tela = new Tela(jog, WIDTH, HEIGTH, SCREEN, lc, enemy);
+
   // tela->init();
 
   //Audio::Sample *mainTheme = new Audio::Sample();

@@ -89,19 +89,15 @@ int main ()
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
-    std::string t = gc->serialize();
-    std::cout << t << '\n';
+    std::string data_to_send = gc->serialize();
+    std::cout << data_to_send << '\n';
     std::vector<Player*> *lp = gc->getJogadores();
-    for(int l = 0; l<(lp)->size(); l++){
+    for(int l = 0; l<CONN; l++){
 
-      // char p[t.length()];
-      // int i;
-      // for (i = 0; i < sizeof(p); i++) {
-      //   p[i] = t[i];
-      // }
-      // send(connection_fd[l], p, sizeof(p), 0);
+      int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
+      std::cout<<i;
+
       char c;
-      if(l==0){c = 'w';} else {c = 's';}
       if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0, l);
       } else if (c=='s'){
