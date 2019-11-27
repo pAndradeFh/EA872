@@ -6,8 +6,8 @@
 #include <vector>
 using namespace std::chrono;
 
-#define WIDTH 30
-#define HEIGTH 30
+#define WIDTH 50
+#define HEIGTH 50
 #define SCREEN 11
 
 ListPlayers::ListPlayers() {

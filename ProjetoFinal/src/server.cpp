@@ -18,9 +18,9 @@
 #include "fisica.hpp"
 #include "tela.hpp"
 
-#define WIDTH 30
-#define HEIGTH 30
-#define FORCA 110
+#define WIDTH 50
+#define HEIGTH 50
+#define FORCA 80
 #define CONN 2
 
 //Server variables
@@ -90,8 +90,8 @@ int main ()
     for(int l = 0; l<CONN; l++){
       int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
       char input_teclado[2];
-      int msglen = recv(connection_fd[l], &input_teclado, 2, MSG_DONTWAIT);;
-      if(msglen>0){
+      int msglen = recv(connection_fd[l], &input_teclado, 1, MSG_DONTWAIT);
+      if(msglen>0) {
         char c = input_teclado[0];
         if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0, l);

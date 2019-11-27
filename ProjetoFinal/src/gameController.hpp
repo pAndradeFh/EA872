@@ -14,6 +14,7 @@ class GameController {
 		ListComida *lista_de_comidas;
 		GameController(ListComida *lista_de_comidas, ListPlayers *lista_de_jogadores);
 		std::vector<Player*> *getJogadores();
+		std::vector<int> *jogadoresAtivos();
 		int verifica_e_realiza_captura();
 		std::string serialize();
 };

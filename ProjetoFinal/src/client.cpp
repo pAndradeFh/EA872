@@ -27,8 +27,8 @@ int socket_fd;
 #include "tela.hpp"
 #include "teclado_client.hpp"
 
-#define WIDTH 30
-#define HEIGTH 30
+#define WIDTH 50
+#define HEIGTH 50
 #define MEIO 11
 
 using namespace std::chrono;
@@ -100,7 +100,7 @@ int main ()
     tela->update(rcv);
     tela->update();
     char c = teclado->getchar();
-    char envio[2];
+    char envio[1];
     int flag = 0;
     if (c=='w') {
         flag = 1;
@@ -118,7 +118,7 @@ int main ()
         envio[0] = 'd';
     }
     if(flag == 1){
-      send(socket_fd, envio, 2, 0);
+      send(socket_fd, envio, 1, 0);
     }
   }
   teclado->stop();

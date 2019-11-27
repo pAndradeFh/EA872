@@ -14,8 +14,8 @@ using json = nlohmann::json;
 
 using namespace std::chrono;
 
-#define WIDTH 30
-#define HEIGTH 30
+#define WIDTH 50
+#define HEIGTH 50
 #define MEIO 11
 
 /*
@@ -126,6 +126,7 @@ void Tela::update() {
 
 	char xsa[64], xsa2[64];
 	std::snprintf(xsa2, sizeof xsa2, "%i", massa);
+	std::snprintf(xsa, sizeof xsa2, "%i", massa);
 	mvaddstr(13, 0, xsa2);
 
 	int right_bound = y + meio;
@@ -142,14 +143,14 @@ void Tela::update() {
 	}
 
 	if (left_bound <= 0) {
-		for (int i = 0; i < this->tela_player; i++) {
-			move(i, meio -y);
+		for (int i = 0; i < 2*meio; i++) {
+			move(i, meio - y);
 			echochar('|');
 		}
 	}
 
 	if(right_bound >= WIDTH){
-		for (int i = 0; i < this->tela_player; i++) {
+		for (int i = 0; i < 2*meio; i++) {
 			move(i, WIDTH + meio - y + 1);
 			echochar('|');
 		}
@@ -205,49 +206,49 @@ void Tela::update() {
 			int y_jog = (int)((*lc)[i]->get_y());
 			int massa_jog = (int)((*lc)[i]->get_massa());
 
-			if(x_jog - x <= meio-1 && y_jog - y <= meio-1){
+			if(x_jog - x <= meio -1 && y_jog - y <= meio-1) {
 				move(x_jog - x + meio, y_jog - y + meio);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 20 && x_jog - x - 1 <= meio-1 && y_jog - y <= meio-1){
 				move(x_jog - x + meio - 1, y_jog - y + meio);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 30 && x_jog - x - 1 <= meio-1 && y_jog - y + 1 <= meio-1){
 				move(x_jog - x + meio - 1, y_jog - y + meio + 1);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 40 && x_jog - x <= meio-1 && y_jog - y + 1 <= meio-1){
 				move(x_jog - x + meio, y_jog - y + meio + 1);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 50 && x_jog - x + 1 <= meio-1 && y_jog - y + 1 <= meio-1){
 				move(x_jog - x + meio + 1, y_jog - y + meio + 1);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 60 && x_jog - x + 1 <= meio-1 && y_jog - y <= meio-1){
 				move(x_jog - x + meio + 1, y_jog - y + meio);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 70 && x_jog - x - 1 <= meio-1 && y_jog - y - 1 <= meio-1){
 				move(x_jog - x + meio -1, y_jog - y + meio -1);
-				echochar('o');
+				echochar('#');
 			}
 
 			if(massa_jog >= 80 && x_jog - x <= meio-1 && y_jog - y - 1 <= meio-1){
 				move(x_jog - x + meio, y_jog - y + meio - 1);
-				echochar('o');
+				echochar('#');
 			}
 
-			if(massa_jog >= 80 && x_jog - x - 1 <= meio-1 && y_jog - y - 1 <= meio-1){
+			if(massa_jog >= 90 && x_jog - x - 1 <= meio-1 && y_jog - y - 1 <= meio-1){
 				move(x_jog - x + meio - 1, y_jog - y + meio - 1);
-				echochar('o');
+				echochar('#');
 			}
 		}
 	}

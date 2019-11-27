@@ -51,7 +51,7 @@ std::string GameController::serialize() {
 int GameController::verifica_e_realiza_captura(){
   std::vector<Player*> *lp = this->getJogadores();
 
-  for (int pla = 1;pla<(lp)->size(); pla++)
+  for (int pla = 0;pla<(lp)->size(); pla++)
   {
     Player *jogador = (*lp)[pla];
     float massa = jogador->get_massa();
@@ -60,6 +60,13 @@ int GameController::verifica_e_realiza_captura(){
 
     int jx = (int)(jogador->get_x());
     int jy = (int)(jogador->get_y());
+
+    for (int enemy = 0; enemy<(lp)->size(); enemy++){
+      if(enemy!=pla){
+          float massa_enemy = (*lp)[enemy]->get_massa();
+          
+      }
+    }
 
     //  veririfica se o jogador comeu alguma comida
     for(int i = 0; i < (lc)->size(); i ++){
@@ -109,5 +116,5 @@ int GameController::verifica_e_realiza_captura(){
       }
       }
   }
-  return 3;
+  return 1;
 }
