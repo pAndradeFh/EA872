@@ -77,15 +77,11 @@ int main ()
     std::snprintf(char_auxiliar, sizeof char_auxiliar, "%i", i);
     send(connection_fd[i], char_auxiliar, 1, 0);
     jogador_vivo[i] = 1;
-  }
-  //
-  // for (int i = 0; i < CONN; i++) {
-  //   send(connection_fd[i], "2", 1, 0);
-  // }
+  } 
 
   Fisica *f = new Fisica(20,lp);
   while (1) {
-    std::this_thread::sleep_for (std::chrono::milliseconds(2000));
+    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
@@ -93,9 +89,9 @@ int main ()
     std::cout << data_to_send << '\n';
     std::vector<Player*> *lp = gc->getJogadores();
     for(int l = 0; l<CONN; l++){
-
       int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
       char c;
+      if(l==0){c='w';}else{c='s';}
       if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0, l);
       } else if (c=='s'){

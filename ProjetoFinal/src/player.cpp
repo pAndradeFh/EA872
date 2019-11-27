@@ -32,8 +32,12 @@ void ListPlayers::addPlayer(int width, int height) {
       }
     }
   }
-  Player *jog = new Player(10, xrand, yrand, 0, 0, 0, 0, 0);
+  Player *jog = new Player(20, xrand, yrand, 0, 0, 0, 0, 0);
   lp->push_back(jog);
+}
+
+void ListPlayers::addPlayer(Player *jog) {
+  this->jogadores->push_back(jog);
 }
 
 /*
@@ -48,6 +52,17 @@ Player::Player(float massa, float x, float y, float vx, float vy, float ax, floa
 	this->aceleracao_x = ax;
 	this->aceleracao_y = ay;
 	this->amortecimento = am;
+}
+
+Player::Player(float x, float y) {
+	this->posicao_x = x;
+	this->posicao_y = y;
+}
+
+Player::Player(float massa, float x, float y) {
+	this->posicao_x = x;
+	this->massa = massa;
+	this->posicao_y = y;
 }
 
 /*

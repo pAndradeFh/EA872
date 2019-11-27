@@ -24,7 +24,7 @@ class Tela {
 		ListComida* get_lc();
     void stop();
     void init();
-    void update(int tempo);
+    void update();
 		void menu();
 		void msg();
 		void vitoria_ou_derrota(int vit_der);

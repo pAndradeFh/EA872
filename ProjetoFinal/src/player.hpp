@@ -17,6 +17,8 @@ class Player {
 
 	public:
 	Player(float massa, float x, float y, float vx, float vy, float ax, float ay, float am);
+	Player(float x, float y);
+	Player(float massa, float x, float y);
 	void update(float x, float y, float vx, float vy);
 	void update(float x, float y, float vx, float vy, float ax, float ay);
 	void update(float massa);
@@ -37,6 +39,7 @@ class ListPlayers{
 		ListPlayers();
 		std::vector<Player*> *getJogadores();
 		void addPlayer(int width, int height);
+		void addPlayer(Player *player);
 		void deletePlayer(int pos);
 };
 

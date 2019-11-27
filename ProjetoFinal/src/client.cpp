@@ -57,51 +57,22 @@ int main ()
   int msg_len = recv(socket_fd, input_buffer, 1, 0);
   if(msg_len>0){
     std::cout << "Connected. \n";
-    std::cout << "You're player number " << input_buffer<<".\n";
+    std::cout << "You're player number " << input_buffer <<".\n";
   }
+  int n_client;
+  sscanf(input_buffer,"%i", &n_client);
 
   //criamos um novo teclado
   Teclado_Client *teclado = new Teclado_Client();
   teclado->init();
-  Tela *tela = new Tela(HEIGTH,WIDTH, (int) input_buffer[1], MEIO);
+
+  Tela *tela = new Tela(HEIGTH,WIDTH, n_client, MEIO);
   tela->init();
 
-  std::cout << "Now waiting for other players. \n";
+  std::cout << "Now waiting for other players to start. \n";
   int tamanho[1];
-  const unsigned int MAX_BUF_LENGTH = 4096;
-  std::vector<char> buffer(MAX_BUF_LENGTH);
-  std::string rcv;
-  int bytesReceived = 0;
-  while(1) {
-    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
-    do {
-      bytesReceived = recv(socket_fd, &buffer[0], buffer.size(), 0);
-      // append string from buffer.
-      if ( bytesReceived == -1 ) {
-      } else {
-         rcv.append( buffer.cbegin(), buffer.cend() );
-      }
-    } while ( bytesReceived == MAX_BUF_LENGTH );
-    tela->update(rcv);
-    tela->update(1);
-    getch();
-    char c = teclado->getchar();
-    if (c=='w') {
-    } else if ( c == 'q') {
-        break;
-    } else if (c=='s'){
+  // int bytesReceived = 0;
 
-    } else if (c=='a'){
-
-    } else if (c=='d'){
-
-    } else {
-
-    }
-  }
-
-  teclado->stop();
-  tela->stop();
   //Audio::Sample *mainTheme = new Audio::Sample();
   //Audio::Sample *victory = new Audio::Sample();
   //Audio::Sample *defeat  = new Audio::Sample();
@@ -114,5 +85,38 @@ int main ()
   //player->init();
   //player->play(mainTheme);
 
-  //
+
+
+  while(1) {
+    std::this_thread::sleep_for (std::chrono::milliseconds(100));
+    const unsigned int MAX_BUF_LENGTH = 400;
+    std::vector<char> buffer(MAX_BUF_LENGTH);
+    std::string rcv;
+    int bytesReceived = 0;
+    do {
+      bytesReceived = recv(socket_fd, &buffer[0], buffer.size(), 0);
+      if ( bytesReceived == 1 ) {
+      } else {
+         rcv.append( buffer.cbegin(), buffer.cend() );
+      }
+    } while ( bytesReceived == MAX_BUF_LENGTH );
+    std::cout<<rcv<<'\n';
+    tela->update(rcv);
+    tela->update();
+    // getch();
+    char c = teclado->getchar();
+    if (c=='w') {
+    } else if ( c == 'q') {
+        break;
+    } else if (c=='s'){
+
+    } else if (c=='a'){
+
+    } else if (c=='d'){
+
+    } else {
+    }
+  }
+  teclado->stop();
+  tela->stop();
 }
