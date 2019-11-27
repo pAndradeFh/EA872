@@ -16,7 +16,7 @@ class GameController {
 		std::vector<Player*> *getJogadores();
 		std::vector<int> *jogadoresAtivos();
 		int verifica_e_realiza_captura();
-		std::string serialize();
+		std::string serialize(int *ativos, int size, int tempo);
 };
 
 #endif

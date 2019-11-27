@@ -33,6 +33,7 @@ void Tela::update(std::string info){
 	ListComida *lc = new ListComida();
 	ListPlayers *lp = new ListPlayers();
 	int parsed = 1;
+	// std::cout<<info<<'\n';
 	try {
   	j = json::parse(info);
 	} catch(const std::exception& e){
@@ -43,6 +44,7 @@ void Tela::update(std::string info){
 		std::vector<int> comidas_x;
 		std::vector<int> players_x;
 		std::vector<int> players_y;
+		std::vector<int> ativos;
 		std::vector<int> massa;
 		for (auto& elem : j["comidas_y"]) {
 				int elemento = (int) elem;
@@ -66,6 +68,11 @@ void Tela::update(std::string info){
 				massa.push_back(elemento);
 		}
 
+		for (auto& elem : j["ativos"]) {
+				int elemento = (int) elem;
+				ativos.push_back(elem);
+		}
+
 		for(int i=0;i<comidas_x.size();i++){
 			Comida *aux = new Comida(comidas_x[i],comidas_y[i]);
 			lc->add_corpo(aux);
@@ -78,6 +85,8 @@ void Tela::update(std::string info){
 
 		this->listaComidas = lc;
 		this->jogadores = lp;
+		this->ativos = ativos;
+		this->tempo = j["tempo"];
 	}
 }
 
@@ -124,9 +133,8 @@ void Tela::update() {
 		}
 	}
 
-	char xsa[64], xsa2[64];
-	std::snprintf(xsa2, sizeof xsa2, "%i", massa);
-	std::snprintf(xsa, sizeof xsa2, "%i", massa);
+	char xsa2[64];
+	std::snprintf(xsa2, sizeof xsa2, "%i", this->tempo/1000);
 	mvaddstr(13, 0, xsa2);
 
 	int right_bound = y + meio;
@@ -263,4 +271,10 @@ void Tela::stop() {
 Tela::~Tela() {
 	this->stop();
 	;
+}
+
+// funçoes auxiliares para mostrar mensagens
+void Tela::menu(){
+  mvaddstr(0, 0, "WELCOME TO TIME RUN (REMASTERED)");
+  mvaddstr(1, 0, "CAPTURE THE MOST FOOD IN 30 s to WIN");
 }

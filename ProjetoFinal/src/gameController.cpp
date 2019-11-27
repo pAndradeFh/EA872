@@ -10,6 +10,11 @@ using namespace std::chrono;
 #include "json.hpp"
 using json = nlohmann::json;
 
+#define WIDTH 50
+#define HEIGTH 50
+#define MEIO 11
+
+
 GameController::GameController(ListComida *lista_de_comidas, ListPlayers *lista_de_jogadores){
   this->lista_de_comidas = lista_de_comidas;
   this->lista_de_jogadores = lista_de_jogadores;
@@ -19,7 +24,7 @@ std::vector<Player*> *GameController::getJogadores(){
   return (this->lista_de_jogadores)->getJogadores();
 }
 
-std::string GameController::serialize() {
+std::string GameController::serialize(int *ativos, int size, int tempo) {
   json j;
   std::vector<Comida *> *lc = this->lista_de_comidas->getComidas();
   std::vector<Player *> *lp = this->getJogadores();
@@ -27,10 +32,14 @@ std::string GameController::serialize() {
   std::vector<int> comidas_x;
   std::vector<int> players_y;
   std::vector<int> points;
+  std::vector<int> vetor_ativos;
   std::vector<int> players_x;
   for(int i = 0; i < (lc)->size(); i ++){
     comidas_y.push_back((*lc)[i]->get_y());
     comidas_x.push_back((*lc)[i]->get_x());
+  }
+  for (int i = 0; i < size; i++){
+    vetor_ativos.push_back(ativos[i]);
   }
   for(int i = 0; i < (lp)->size(); i ++){
     players_x.push_back((*lp)[i]->get_x());
@@ -42,6 +51,8 @@ std::string GameController::serialize() {
   j["players_x"] = players_x;
   j["comidas_x"] = comidas_x;
   j["points"] = points;
+  j["ativos"] = vetor_ativos;
+  j["tempo"] = tempo;
   return j.dump();
 }
 
@@ -49,6 +60,26 @@ std::string GameController::serialize() {
 //  O controlador de jogo efetua a captura da comida pelo jogador e veririca situação do jogo
 //
 int GameController::verifica_e_realiza_captura(){
+  std::vector<Comida *> *lc = this->lista_de_comidas->getComidas();
+
+  int xrand = rand() % 200 + 1;
+  if (xrand <= 8){
+    int aux = 0;
+    int xrand, yrand;
+    while(aux==0) {
+      aux = 1;
+      int xrand = rand() % (WIDTH - 1) + 1;
+      int yrand = rand() % (HEIGTH - 1) + 1;
+      for (int k=0;k<(lc)->size();k++){
+        if(xrand==(*lc)[k]->get_x() && yrand==(*lc)[k]->get_y()){
+          aux = 0;
+        }
+      }
+    }
+    Comida *c = new Comida(xrand, yrand);
+    this->lista_de_comidas->add_corpo(c);
+  }
+
   std::vector<Player*> *lp = this->getJogadores();
 
   for (int pla = 0;pla<(lp)->size(); pla++)
@@ -56,15 +87,15 @@ int GameController::verifica_e_realiza_captura(){
     Player *jogador = (*lp)[pla];
     float massa = jogador->get_massa();
 
-    std::vector<Comida *> *lc = this->lista_de_comidas->getComidas();
-
     int jx = (int)(jogador->get_x());
     int jy = (int)(jogador->get_y());
 
     for (int enemy = 0; enemy<(lp)->size(); enemy++){
       if(enemy!=pla){
           float massa_enemy = (*lp)[enemy]->get_massa();
-          
+          int e_x = (*lp)[enemy]->get_x();
+          int e_y = (*lp)[enemy]->get_y();
+
       }
     }
 

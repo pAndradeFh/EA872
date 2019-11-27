@@ -71,6 +71,9 @@ int main ()
   std::cout << "Now waiting for other players to start. \n";
   int tamanho[1];
 
+  // tela->menu();
+  // std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+
   //Audio::Sample *mainTheme = new Audio::Sample();
   //Audio::Sample *victory = new Audio::Sample();
   //Audio::Sample *defeat  = new Audio::Sample();
@@ -85,7 +88,7 @@ int main ()
 
   while(1) {
     std::this_thread::sleep_for (std::chrono::milliseconds(100));
-    const unsigned int MAX_BUF_LENGTH = 400;
+    const unsigned int MAX_BUF_LENGTH = 4096;
     std::vector<char> buffer(MAX_BUF_LENGTH);
     std::string rcv;
     int bytesReceived = 0;
@@ -96,7 +99,6 @@ int main ()
          rcv.append( buffer.cbegin(), buffer.cend() );
       }
     } while ( bytesReceived == MAX_BUF_LENGTH );
-    std::cout<<rcv<<'\n';
     tela->update(rcv);
     tela->update();
     char c = teclado->getchar();
@@ -123,4 +125,5 @@ int main ()
   }
   teclado->stop();
   tela->stop();
+  //player->stop();
 }

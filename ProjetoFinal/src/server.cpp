@@ -21,6 +21,7 @@
 #define WIDTH 50
 #define HEIGTH 50
 #define FORCA 80
+#define VEL_MAX 5
 #define CONN 2
 
 //Server variables
@@ -52,6 +53,8 @@ int main ()
   uint64_t deltaT;
   uint64_t T;
 
+  T = get_now_ms();
+  t1 = T;
 
   socket_fd = socket(AF_INET, SOCK_STREAM, 0);
   myself.sin_family = AF_INET;
@@ -79,16 +82,19 @@ int main ()
     jogador_vivo[i] = 1;
   }
 
-  Fisica *f = new Fisica(20,lp);
+  Fisica *f = new Fisica(VEL_MAX,lp);
   while (1) {
     std::this_thread::sleep_for (std::chrono::milliseconds(100));
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
     gc->verifica_e_realiza_captura();
-    std::string data_to_send = gc->serialize();
+    std::string data_to_send = gc->serialize(jogador_vivo, CONN, (int)(t1-T));
     for(int l = 0; l<CONN; l++){
-      int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
+      if(jogador_vivo[l] != -1){
+        int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
+        if(i==-1) jogador_vivo[l] = -1;
+      }
       char input_teclado[2];
       int msglen = recv(connection_fd[l], &input_teclado, 1, MSG_DONTWAIT);
       if(msglen>0) {
@@ -104,6 +110,9 @@ int main ()
         }
       }
     }
+    if ( (t1-T) > 30000 ) {
+          break;
+    };
     f->update(deltaT);
   }
 }
