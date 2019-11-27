@@ -19,7 +19,6 @@
 using json = nlohmann::json;
 int socket_fd;
 
-
 #include "audio.hpp"
 #include "comida.hpp"
 #include "player.hpp"
@@ -28,8 +27,8 @@ int socket_fd;
 #include "tela.hpp"
 #include "teclado_client.hpp"
 
-#define WIDTH 100
-#define HEIGTH 50
+#define WIDTH 30
+#define HEIGTH 30
 #define MEIO 11
 
 using namespace std::chrono;
@@ -71,7 +70,6 @@ int main ()
 
   std::cout << "Now waiting for other players to start. \n";
   int tamanho[1];
-  // int bytesReceived = 0;
 
   //Audio::Sample *mainTheme = new Audio::Sample();
   //Audio::Sample *victory = new Audio::Sample();
@@ -84,8 +82,6 @@ int main ()
   //Audio::Player *player = new Audio::Player();
   //player->init();
   //player->play(mainTheme);
-
-
 
   while(1) {
     std::this_thread::sleep_for (std::chrono::milliseconds(100));
@@ -103,18 +99,26 @@ int main ()
     std::cout<<rcv<<'\n';
     tela->update(rcv);
     tela->update();
-    // getch();
     char c = teclado->getchar();
+    char envio[2];
+    int flag = 0;
     if (c=='w') {
+        flag = 1;
+        envio[0] = 'w';
     } else if ( c == 'q') {
         break;
     } else if (c=='s'){
-
+        flag = 1;
+        envio[0] = 's';
     } else if (c=='a'){
-
+        flag = 1;
+        envio[0] = 'a';
     } else if (c=='d'){
-
-    } else {
+        flag = 1;
+        envio[0] = 'd';
+    }
+    if(flag == 1){
+      send(socket_fd, envio, 2, 0);
     }
   }
   teclado->stop();

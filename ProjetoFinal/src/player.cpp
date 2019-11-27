@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std::chrono;
 
-#define WIDTH 20
+#define WIDTH 30
 #define HEIGTH 30
 #define SCREEN 11
 

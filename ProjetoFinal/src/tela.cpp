@@ -14,8 +14,8 @@ using json = nlohmann::json;
 
 using namespace std::chrono;
 
-#define WIDTH 100
-#define HEIGTH 50
+#define WIDTH 30
+#define HEIGTH 30
 #define MEIO 11
 
 /*
@@ -32,46 +32,53 @@ void Tela::update(std::string info){
 	json j;
 	ListComida *lc = new ListComida();
 	ListPlayers *lp = new ListPlayers();
-  j = json::parse(info);
-	std::vector<int> comidas_y;
-	std::vector<int> comidas_x;
-	std::vector<int> players_x;
-	std::vector<int> players_y;
-	std::vector<int> massa;
-	for (auto& elem : j["comidas_y"]) {
-			int elemento = (int) elem;
-			comidas_y.push_back(elemento);
+	int parsed = 1;
+	try {
+  	j = json::parse(info);
+	} catch(const std::exception& e){
+		parsed = 0;
 	}
-	for (auto& elem : j["comidas_x"]) {
-			int elemento = (int) elem;
-			comidas_x.push_back(elemento);
-	}
-	for (auto& elem : j["players_x"]) {
-			int elemento = (int) elem;
-			players_x.push_back(elemento);
-	}
-	for (auto& elem : j["players_y"]) {
-			int elemento = (int) elem;
-			players_y.push_back(elemento);
-	}
+	if(parsed) {
+		std::vector<int> comidas_y;
+		std::vector<int> comidas_x;
+		std::vector<int> players_x;
+		std::vector<int> players_y;
+		std::vector<int> massa;
+		for (auto& elem : j["comidas_y"]) {
+				int elemento = (int) elem;
+				comidas_y.push_back(elemento);
+		}
+		for (auto& elem : j["comidas_x"]) {
+				int elemento = (int) elem;
+				comidas_x.push_back(elemento);
+		}
+		for (auto& elem : j["players_x"]) {
+				int elemento = (int) elem;
+				players_x.push_back(elemento);
+		}
+		for (auto& elem : j["players_y"]) {
+				int elemento = (int) elem;
+				players_y.push_back(elemento);
+		}
 
-	for (auto& elem : j["points"]) {
-			int elemento = (int) elem;
-			massa.push_back(elemento);
-	}
+		for (auto& elem : j["points"]) {
+				int elemento = (int) elem;
+				massa.push_back(elemento);
+		}
 
-	for(int i=0;i<comidas_x.size();i++){
-		Comida *aux = new Comida(comidas_x[i],comidas_y[i]);
-		lc->add_corpo(aux);
-	}
+		for(int i=0;i<comidas_x.size();i++){
+			Comida *aux = new Comida(comidas_x[i],comidas_y[i]);
+			lc->add_corpo(aux);
+		}
 
-	for(int i=0;i<players_y.size();i++){
-		Player *aux = new Player(massa[i],players_x[i],players_y[i]);
-		lp->addPlayer(aux);
-	}
+		for(int i=0;i<players_y.size();i++){
+			Player *aux = new Player(massa[i],players_x[i],players_y[i]);
+			lp->addPlayer(aux);
+		}
 
-	this->listaComidas = lc;
-	this->jogadores = lp;
+		this->listaComidas = lc;
+		this->jogadores = lp;
+	}
 }
 
 //inicia a tela
@@ -118,9 +125,7 @@ void Tela::update() {
 	}
 
 	char xsa[64], xsa2[64];
-	// std::snprintf(xsa, sizeof xsa, "%f", this->jogador->get_massa());
-	// mvaddstr(12, 0, xsa);
-	std::snprintf(xsa2, sizeof xsa2, "%i", x);
+	std::snprintf(xsa2, sizeof xsa2, "%i", massa);
 	mvaddstr(13, 0, xsa2);
 
 	int right_bound = y + meio;
@@ -150,75 +155,109 @@ void Tela::update() {
 		}
 	}
 
-	move(meio, meio);
-	echochar('o');
+	for (int i = 0; i<lc->size(); i++) {
+		if(i == posi) {
+			massa = (int)((*lc)[posi]->get_massa());
+			move(meio, meio);
+			echochar('o');
 
-	if(massa >= 20){
-		move(meio - 1, meio);
-		echochar('o');
+			if(massa >= 20){
+				move(meio - 1, meio);
+				echochar('o');
+			}
+
+			if(massa >= 30){
+				move(meio - 1, meio + 1);
+				echochar('o');
+			}
+
+			if(massa >= 40){
+				move(meio, meio + 1);
+				echochar('o');
+			}
+
+			if(massa >= 50){
+				move(meio + 1, meio + 1);
+				echochar('o');
+			}
+
+			if(massa >= 60){
+				move(meio + 1, meio);
+				echochar('o');
+			}
+
+			if(massa >= 70){
+				move(meio+1, meio - 1);
+				echochar('o');
+			}
+
+			if(massa >= 80){
+				move(meio, meio - 1);
+				echochar('o');
+			}
+
+			if(massa >= 90){
+				move(meio - 1, meio - 1);
+				echochar('o');
+			}
+		} else {
+			int x_jog = (int)((*lc)[i]->get_x());
+			int y_jog = (int)((*lc)[i]->get_y());
+			int massa_jog = (int)((*lc)[i]->get_massa());
+
+			if(x_jog - x <= meio-1 && y_jog - y <= meio-1){
+				move(x_jog - x + meio, y_jog - y + meio);
+				echochar('o');
+			}
+
+			if(massa_jog >= 20 && x_jog - x - 1 <= meio-1 && y_jog - y <= meio-1){
+				move(x_jog - x + meio - 1, y_jog - y + meio);
+				echochar('o');
+			}
+
+			if(massa_jog >= 30 && x_jog - x - 1 <= meio-1 && y_jog - y + 1 <= meio-1){
+				move(x_jog - x + meio - 1, y_jog - y + meio + 1);
+				echochar('o');
+			}
+
+			if(massa_jog >= 40 && x_jog - x <= meio-1 && y_jog - y + 1 <= meio-1){
+				move(x_jog - x + meio, y_jog - y + meio + 1);
+				echochar('o');
+			}
+
+			if(massa_jog >= 50 && x_jog - x + 1 <= meio-1 && y_jog - y + 1 <= meio-1){
+				move(x_jog - x + meio + 1, y_jog - y + meio + 1);
+				echochar('o');
+			}
+
+			if(massa_jog >= 60 && x_jog - x + 1 <= meio-1 && y_jog - y <= meio-1){
+				move(x_jog - x + meio + 1, y_jog - y + meio);
+				echochar('o');
+			}
+
+			if(massa_jog >= 70 && x_jog - x - 1 <= meio-1 && y_jog - y - 1 <= meio-1){
+				move(x_jog - x + meio -1, y_jog - y + meio -1);
+				echochar('o');
+			}
+
+			if(massa_jog >= 80 && x_jog - x <= meio-1 && y_jog - y - 1 <= meio-1){
+				move(x_jog - x + meio, y_jog - y + meio - 1);
+				echochar('o');
+			}
+
+			if(massa_jog >= 80 && x_jog - x - 1 <= meio-1 && y_jog - y - 1 <= meio-1){
+				move(x_jog - x + meio - 1, y_jog - y + meio - 1);
+				echochar('o');
+			}
+		}
 	}
 
-	if(massa >= 30){
-		move(meio - 1, meio + 1);
-		echochar('o');
-	}
-
-	if(massa >= 40){
-		move(meio, meio + 1);
-		echochar('o');
-	}
-
-	if(massa >= 50){
-		move(meio + 1, meio + 1);
-		echochar('o');
-	}
-
-	if(massa >= 60){
-		move(meio + 1, meio);
-		echochar('o');
-	}
-
-	if(massa >= 70){
-		move(meio+1, meio - 1);
-		echochar('o');
-	}
-
-	if(massa >= 80){
-		move(meio, meio - 1);
-		echochar('o');
-	}
-
-	if(massa >= 90){
-		move(meio - 1, meio - 1);
-		echochar('o');
-	}
 	refresh();
 }
 
 void Tela::stop() {
 	endwin();
 }
-
-// funçoes auxiliares para mostrar mensagens
-void Tela::menu(){
-  mvaddstr(0, 0, "WELCOME TO AGAR.IO (REMASTERED)");
-  mvaddstr(1, 0, "TYPE 't' TO TIME RUN");
-  mvaddstr(2, 0, "TYPE 'e' TO MULTIPLAYER (SOON)");
-  mvaddstr(3, 0, "TYPE 'q' TO EXIT");
-}
-
-void Tela::msg(){
-	mvaddstr(5, 0, "================================================");
-	mvaddstr(6, 0, "GET 100 PTS (*) AND RUN FROM ENEMIES (+) IN 30 s.");
-	mvaddstr(7, 0, "================================================");
-}
-
-void Tela::vitoria_ou_derrota(int vit_der){
-	clear();
-	if(vit_der == 0) { mvaddstr(6, 3, "YOU LOSE!"); }
-	else  {mvaddstr(6, 3, "YOU WIN!");}
-}
-
 
 Tela::~Tela() {
 	this->stop();

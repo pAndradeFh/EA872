@@ -18,8 +18,8 @@
 #include "fisica.hpp"
 #include "tela.hpp"
 
-#define WIDTH 100
-#define HEIGTH 50
+#define WIDTH 30
+#define HEIGTH 30
 #define FORCA 110
 #define CONN 2
 
@@ -77,32 +77,33 @@ int main ()
     std::snprintf(char_auxiliar, sizeof char_auxiliar, "%i", i);
     send(connection_fd[i], char_auxiliar, 1, 0);
     jogador_vivo[i] = 1;
-  } 
+  }
 
   Fisica *f = new Fisica(20,lp);
   while (1) {
-    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for (std::chrono::milliseconds(100));
     t0 = t1;
     t1 = get_now_ms();
     deltaT = t1-t0;
+    gc->verifica_e_realiza_captura();
     std::string data_to_send = gc->serialize();
-    std::cout << data_to_send << '\n';
-    std::vector<Player*> *lp = gc->getJogadores();
     for(int l = 0; l<CONN; l++){
       int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
-      char c;
-      if(l==0){c='w';}else{c='s';}
-      if (c=='w') {
+      char input_teclado[2];
+      int msglen = recv(connection_fd[l], &input_teclado, 2, MSG_DONTWAIT);;
+      if(msglen>0){
+        char c = input_teclado[0];
+        if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0, l);
-      } else if (c=='s'){
+        } else if (c=='s'){
           f->aplica_forca(deltaT, FORCA, 0.0, l);
-      } else if (c=='a'){
+        } else if (c=='a'){
           f->aplica_forca(deltaT, 0.0, -FORCA, l);
-      } else if (c=='d'){
+        } else if (c=='d'){
           f->aplica_forca(deltaT, 0.0, FORCA, l);
-      } else {
-          f->update(deltaT);
+        }
       }
     }
+    f->update(deltaT);
   }
 }

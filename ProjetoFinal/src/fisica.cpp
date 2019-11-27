@@ -6,9 +6,9 @@
 #include <vector>
 using namespace std::chrono;
 
-#define WIDTH 100
-#define HEIGTH 50
-#define FORCA 110
+#define WIDTH 30
+#define HEIGTH 30
+#define FORCA 80
 #define CONN 4
 /*
 	Construtor Fisica - cria uma nova fisica
@@ -21,12 +21,14 @@ Fisica::Fisica(float max_vel, ListPlayers *jogadores) {
 //	Atualiza o modelo físico
 void Fisica::update(float deltaT) {
 	std::vector<Player*> *jogadores = (this->lista_de_jogadores)->getJogadores();
+	float max_vel = this->max_vel;
 	for(int jk=0;jk<jogadores->size();jk++)
 	{
 		Player *jog = (*jogadores)[jk];
 		float new_vel_x = jog->get_vx() + (float)deltaT * jog->get_ax() / 1000;
+		if(new_vel_x > max_vel) new_vel_x = max_vel;
 		float new_vel_y = jog->get_vy() + (float)deltaT * jog->get_ay() / 1000;
-
+		if(new_vel_y > max_vel) new_vel_y = max_vel;
 		float new_pos_x = jog->get_x() + (float)deltaT * new_vel_x / 1000;
 		float new_pos_y = jog->get_y() + (float)deltaT * new_vel_y / 1000;
 
