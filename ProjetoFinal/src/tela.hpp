@@ -17,8 +17,8 @@ class Tela {
     int meio;
     int tempo;
 		ListComida *listaComidas;
-    std::vector<int> ativos;
   public:
+    std::vector<int> ativos;
     Tela(int largura, int comprimento, int tela_player, int meio);
     void update(std::string info);
     ~Tela();

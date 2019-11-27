@@ -9,6 +9,7 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <ncurses.h>
 
 #include "audio.hpp"
@@ -20,7 +21,7 @@
 
 #define WIDTH 50
 #define HEIGTH 50
-#define FORCA 80
+#define FORCA 60
 #define VEL_MAX 5
 #define CONN 2
 
@@ -111,8 +112,23 @@ int main ()
       }
     }
     if ( (t1-T) > 30000 ) {
-          break;
+      for(int user =0; user < CONN; user++){
+        jogador_vivo[user] = 2;
+      }
+      std::string data_to_send = gc->serialize(jogador_vivo, CONN, (int)(t1-T));
+      for(int ll = 0; ll<CONN; ll++){
+        if(jogador_vivo[ll] != -1){
+          int i = send(connection_fd[ll], data_to_send.c_str(), data_to_send.length(), 0);
+        }
+      }
+      break;
     };
     f->update(deltaT);
   }
+  for(int user =0; user < CONN; user++){
+    if(jogador_vivo[user] != -1) {
+      close(connection_fd[user]);
+    }
+  }
+
 }

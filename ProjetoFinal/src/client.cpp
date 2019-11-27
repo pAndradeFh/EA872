@@ -94,12 +94,19 @@ int main ()
     int bytesReceived = 0;
     do {
       bytesReceived = recv(socket_fd, &buffer[0], buffer.size(), 0);
-      if ( bytesReceived == 1 ) {
+      if ( bytesReceived == -1 ) {
       } else {
          rcv.append( buffer.cbegin(), buffer.cend() );
       }
     } while ( bytesReceived == MAX_BUF_LENGTH );
     tela->update(rcv);
+    if( (tela->ativos)[n_client]==2 ){
+      std::cout<<"You win" << "\n";
+      break;
+    } else if ((tela->ativos)[n_client]==3){
+      std::cout<<"You lose" << "\n";
+      break;
+    }
     tela->update();
     char c = teclado->getchar();
     char envio[1];
@@ -123,6 +130,7 @@ int main ()
       send(socket_fd, envio, 1, 0);
     }
   }
+
   teclado->stop();
   tela->stop();
   //player->stop();

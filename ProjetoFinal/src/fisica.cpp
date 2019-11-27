@@ -8,7 +8,7 @@ using namespace std::chrono;
 
 #define WIDTH 50
 #define HEIGTH 50
-#define FORCA 80
+#define FORCA 60
 /*
 	Construtor Fisica - cria uma nova fisica
 */

@@ -8,7 +8,6 @@ class Fisica {
   private:
     ListPlayers *lista_de_jogadores;
 		float max_vel;
-
   public:
     Fisica(float max_vel, ListPlayers *jogadores);
 		void update(float deltaT);
