@@ -30,6 +30,7 @@ int socket_fd;
 
 #define WIDTH 100
 #define HEIGTH 50
+#define MEIO 11
 
 using namespace std::chrono;
 uint64_t get_now_ms() {
@@ -52,7 +53,7 @@ int main ()
     std::cerr << "It was not possible to connect to the server. \n Exiting. \n";
     exit(0);
   }
-  char input_buffer[1000];
+  char input_buffer[1];
   int msg_len = recv(socket_fd, input_buffer, 1, 0);
   if(msg_len>0){
     std::cout << "Connected. \n";
@@ -60,8 +61,10 @@ int main ()
   }
 
   //criamos um novo teclado
-  // Teclado_Client *teclado = new Teclado_Client();
-  // teclado->init();
+  Teclado_Client *teclado = new Teclado_Client();
+  teclado->init();
+  Tela *tela = new Tela(HEIGTH,WIDTH, (int) input_buffer[1], MEIO);
+  tela->init();
 
   std::cout << "Now waiting for other players. \n";
   int tamanho[1];
@@ -79,15 +82,26 @@ int main ()
          rcv.append( buffer.cbegin(), buffer.cend() );
       }
     } while ( bytesReceived == MAX_BUF_LENGTH );
-    
+    tela->update(rcv);
+    tela->update(1);
+    getch();
+    char c = teclado->getchar();
+    if (c=='w') {
+    } else if ( c == 'q') {
+        break;
+    } else if (c=='s'){
+
+    } else if (c=='a'){
+
+    } else if (c=='d'){
+
+    } else {
+
+    }
   }
 
-  // teclado->stop();
-  // send(socket_fd, "&c", 1, 0);
-
-
-  // tela->init();
-
+  teclado->stop();
+  tela->stop();
   //Audio::Sample *mainTheme = new Audio::Sample();
   //Audio::Sample *victory = new Audio::Sample();
   //Audio::Sample *defeat  = new Audio::Sample();

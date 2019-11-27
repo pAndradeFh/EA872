@@ -78,10 +78,10 @@ int main ()
     send(connection_fd[i], char_auxiliar, 1, 0);
     jogador_vivo[i] = 1;
   }
-
-  for (int i = 0; i < CONN; i++) {
-    send(connection_fd[i], "2", 1, 0);
-  }
+  //
+  // for (int i = 0; i < CONN; i++) {
+  //   send(connection_fd[i], "2", 1, 0);
+  // }
 
   Fisica *f = new Fisica(20,lp);
   while (1) {
@@ -95,8 +95,6 @@ int main ()
     for(int l = 0; l<CONN; l++){
 
       int i = send(connection_fd[l], data_to_send.c_str(), data_to_send.length(), 0);
-      std::cout<<i;
-
       char c;
       if (c=='w') {
           f->aplica_forca(deltaT, -FORCA, 0.0, l);

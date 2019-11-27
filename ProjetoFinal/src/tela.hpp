@@ -10,15 +10,16 @@ using json = nlohmann::json;
 
 class Tela {
   private:
-    Player *jogador;
+    ListPlayers *jogadores;
     int largura;
 		int comprimento;
 		int tela_player;
+    int meio;
 		ListComida *listaComidas;
 
   public:
-    Tela(Player *ldc, int largura, int comprimento, int tela_player, ListComida *lc);
-    Tela(std::string info);
+    Tela(int largura, int comprimento, int tela_player, int meio);
+    void update(std::string info);
     ~Tela();
 		ListComida* get_lc();
     void stop();
